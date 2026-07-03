@@ -10,14 +10,13 @@ window.uploadedImageUrl = null;
 // =========================
 
 window.socket = io({
-  transports: ["websocket","polling"],
+  transports: ["polling", "websocket"], // 🔥 polling FIRST
   reconnection: true,
   reconnectionAttempts: Infinity,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
   timeout: 20000
-});
-// =========================
+});// =========================
 // 📦 DOM
 // =========================
 
