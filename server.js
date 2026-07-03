@@ -30,21 +30,23 @@ app.get('/favicon.ico', (req, res) => {
   res.status(204).end();
 });
 const server = http.createServer(app);
-
+server.keepAliveTimeout = 65000;
+server.headersTimeout = 66000;
 const io = new Server(server, {
-  transports: ["websocket", "polling"],
-
-  maxHttpBufferSize:
-    50 * 1024 * 1024,
-
   cors: {
-    origin: "*"
+    origin: "*",
+    methods: ["GET", "POST"]
   },
+
+  transports: ["polling", "websocket"], // 🔥 polling FIRST
+
+  allowEIO3: true, // 🔥 mobile compatibility
+
+  maxHttpBufferSize: 50 * 1024 * 1024,
 
   pingTimeout: 60000,
   pingInterval: 25000
-});
-// Railway/Proxy compatibility
+});// Railway/Proxy compatibility
 app.set("trust proxy", 1);
 /* =========================
    CLOUDINARY
@@ -963,7 +965,7 @@ socket.on("disconnect", () => {
 /* =========================
    START SERVER
 ========================= */
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 server.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on port " + PORT);
 });
