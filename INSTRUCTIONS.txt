@@ -1,0 +1,295 @@
+STEPS:
+Windows Key + R
+cmd
+ipconfig
+IPv4 Address
+192.168.100.XXX
+OPEN PHONE BROWSER:
+http://192.168.100.XXX:3001 (OPENS GOOD)
+GOOGLE - http://192.168.0.1 / http://192.168.1.1 / http://192.168.100.1
+LOGIN: username: admin  / password: on router sticker
+PORT FORWARDING
+
+LOOK FOR:
+
+Port Forwarding
+NAT
+Virtual Servers
+Applications
+
+EVERY ROUTER DIFFERENT.
+STEP 8 — CREATE NEW RULE
+
+ADD:
+
+Setting	Value
+Name	Karaoke
+Protocol	TCP
+External Port	3001
+Internal Port	3001
+Internal IP	192.168.100.133
+
+(REPLACE with YOUR PC IP)
+
+SAVE.
+
+STEP 9 — ALLOW WINDOWS FIREWALL
+
+IF WINDOWS POPUP APPEARS:
+
+CLICK:
+
+Allow Access
+
+If no popup:
+
+STEP 10 — MANUAL FIREWALL FIX
+
+OPEN:
+
+Windows Defender Firewall
+
+CLICK:
+
+Advanced Settings
+
+LEFT SIDE:
+
+Inbound Rules
+
+RIGHT SIDE:
+
+New Rule
+
+SELECT:
+
+Port
+
+NEXT
+
+SELECT:
+
+TCP
+
+PORT:
+
+3001
+
+NEXT
+
+SELECT:
+
+Allow the connection
+
+NEXT
+
+CHECK:
+
+Domain
+Private
+Public
+
+NEXT
+
+NAME:
+
+Karaoke 3001
+
+FINISH.
+
+STEP 11 — UPDATE DUCKDNS
+
+OPEN:
+
+https://www.duckdns.org
+
+YOUR DOMAIN:
+
+deankaraokelivechat.duckdns.org
+
+CLICK:
+
+update ip
+
+DONE.
+
+STEP 12 — TEST YOUR REAL PUBLIC URL
+
+TURN OFF WIFI ON PHONE.
+
+USE MOBILE DATA.
+
+OPEN:
+
+http://deankaraokelivechat.duckdns.org:3001
+
+IMPORTANT:
+You MUST include:
+
+:3001
+
+
+
+
+
+
+
+
+
+STEP 1
+
+Avatar upload system.
+
+MOST important.
+
+STEP 2
+
+Avatar display in chat + overlay.
+
+STEP 3
+
+Moderator avatar controls.
+
+STEP 4
+
+Permanent user profiles.
+
+STEP 5
+
+Rooms.
+
+STEP 6
+
+Performance pages.
+
+STEP 7
+
+Followers + likes + comments.
+
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+https://www.duckdns.org
+https://www.duckdns.org/domainsdeankaraokelivechat.duckdns.org
+✅ free Cloudflare account
+✅ named tunnel
+✅ fixed URL
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+STEP 12 — IMPORTANT PM2 COMMANDS
+CHECK SERVER
+pm2 list
+VIEW SERVER LOGS
+pm2 logs karaoke
+RESTART SERVER
+pm2 restart karaoke
+STOP SERVER
+pm2 stop karaoke
+DELETE SERVER
+pm2 delete karaoke
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+MAIN APP
+https://left-researchers-penalty-smallest.trycloudflare.com
+OVERLAY
+https://left-researchers-penalty-smallest.trycloudflare.com/overlay.html
+CONTROL PANEL
+https://left-researchers-penalty-smallest.trycloudflare.com/control.html
+PERFORMANCE GALLERY
+https://left-researchers-penalty-smallest.trycloudflare.com/performances.htmlZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+HOW TO SWITCH FAST
+
+Press:
+
+CTRL + Windows + Left Arrow
+
+or
+
+CTRL + Windows + Right Arrow
+Windows + Tab
+Windows + D MINIMIZES ALL WINDOWS
+BIGGEST ISSUE REMAINING
+
+Your ENTIRE file is becoming too large and unstable.
+
+You now have:
+
+chat
+voting
+reactions
+uploads
+image viewer
+accounts
+leaderboard
+PWA
+performance downloads
+typing
+reply system
+swipe gestures
+overlays
+spotlight
+pinning
+
+ALL INSIDE ONE HTML FILE.
+
+Mobile browsers HATE this.
+
+You should eventually split into:
+
+chat-core.js
+reactions.js
+voting.js
+account.js
+performance.js
+pwa.js
+
+That will massively stabilize the app.
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+taskkill /F /IM node.exe
+npm install
+node server.js
+ngrok http 3001
+Meet Codex
+http://localhost:3001/overlay.html
+http://localhost:3001/control.html
+http://localhost:3001/chat.html
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+TikTok-style hearts need:
+
+curved motion ✅
+staggered timing ✅
+easing (slow → fast → slow) ✅
+slight randomness per heart ✅
+
+precise placement: ABOVE / BELOW / BETWEEN lines/coding SHOULD NOW LOOK LIKE THIS ETC.
+
+FINAL RESULT SHOULD LOOK EXACTLY LIKE THIS: show you EXACTLY where everything goes  DO NOT ASSUME I KNOW HOW TO NAVIGATE THE CODING I WANT STEP BY STEP ALWAYS INSTRUCTIONS AS I HAVE INSTRUCTED in both:
+✅ server.js
+✅ chat.html
+overlay.html
+control panel.html
+FROM → TO with copy/paste blocks so you don’t break anything.
+No guessing. No breaking your app.
+✅ FIND THIS
+✅ ADD UNDER THIS LINE
+✅ EXACT POSITION
+✅ NO UI CHANGE
+✅ NO REFACTOR
+BUILD NOW SINGING SYSTEM”
+
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+SERVER RESTART = EVERYTHING LOST
+
+That includes future voting.
+
+So eventually you should store:
+
+contestants
+rounds
+votes
+leaderboard history
+
+in:
+
+SQLite
+LowDB
+MongoDB
+Supabase
+
+But for now RAM is acceptable while building.

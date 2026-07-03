@@ -1,0 +1,2978 @@
+Phase 1
+contestant registry
+vote storage
+leaderboard calculation
+Phase 2
+admin controls
+start voting
+stop voting
+reveal scores
+Phase 3
+anti-cheat
+one vote per contestant
+round locking
+reconnect protection
+Phase 4
+karaoke-style animated rankings
+gold/silver/bronze podium
+crowd favorite effects
+
+Before we add anything else, let's verify whether server.js already contains any voting code.
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+gently reminder about how we started on the voting system:15. MY PROFESSIONAL RECOMMENDATION FOR YOU
+
+
+
+IMPLEMENT IN THIS ORDER:
+
+
+
+PHASE 1
+
+
+
+Core engine only
+
+
+
+voting state
+
+contestants
+
+people votes
+
+leaderboard
+
+reveal system
+
+PHASE 2
+
+
+
+UI system
+
+
+
+vote popup
+
+leaderboard popup
+
+animated rankings
+
+podium glow
+
+PHASE 3
+
+
+
+Judge system
+
+
+
+weighted scoring
+
+judge panels
+
+scoring categories
+
+official totals
+
+PHASE 4
+
+
+
+Advanced anti-cheat
+
+
+
+reconnect tracking
+
+session tokens
+
+account system
+
+persistent identities
+
+MOST IMPORTANT FINAL ADVICE
+
+
+
+Your current app is already large.
+
+
+
+DO NOT paste giant blocks randomly.
+
+
+
+Your stability now depends on:
+
+
+
+modular additions
+
+isolated socket events
+
+isolated UI containers
+
+avoiding duplicated listeners
+
+avoiding global variable collisions
+
+
+
+That is the key to keeping this stable as it grows.     I’ve reviewed Part 1 of your chat.html.
+
+
+
+Your structure is actually a very strong base for adding a professional karaoke voting system because you already have:
+
+
+
+fixed right-side action buttons
+
+glowing UI system
+
+leaderboard-style performance browser
+
+socket-ready architecture
+
+admin/control-panel logic patterns
+
+animated interactive UX
+
+mobile-first layout
+
+live reactions system
+
+persistent performance system
+
+
+
+The voting system can integrate cleanly without breaking your current app if we build it as:
+
+
+
+a separate voting module
+
+isolated socket events
+
+separate leaderboard renderer
+
+separate admin controls
+
+anti-cheat vote registry
+
+round-based reset system
+
+visual vote states
+
+
+
+Your two-category system is excellent for karaoke competitions:
+
+
+
+Voting Categories
+
+🎤 Judge Official
+
+
+
+Weighted scoring:
+
+
+
+Vocals → 20
+
+Rendition → 25
+
+Presentation → 25
+
+Crowd Response → 30
+
+Total = 100
+
+🏆 People’s Choice
+
+
+
+Audience votes:
+
+
+
+1–20 points
+
+One contestant at a time
+
+Cannot re-vote same singer in same round
+
+Reset next round
+
+
+
+You also requested:
+
+
+
+enable/disable voting from control panel
+
+glowing vote button
+
+live leaderboard
+
+reveal scores only when admin chooses
+
+highest → lowest sorting
+
+anti-double-vote protection
+
+anti-spam safeguards
+
+visually attractive scoreboard
+
+karaoke-show style experience
+
+
+
+All of that is absolutely doable with your current structure.
+
+
+
+I will NOT prepare the implementation instructions yet as requested.
+
+
+
+Please continue sending:
+
+
+
+chat.html Part 2
+
+server.js (most important)
+
+
+
+After I review everything, I’ll design:
+
+
+
+safest architecture
+
+socket events
+
+vote storage model
+
+leaderboard rendering
+
+admin controls
+
+anti-cheat protections
+
+mobile-safe UI placement
+
+exact insertion points in your code
+
+
+
+before we begin implementation.
+
+I’ve now fully reviewed:
+
+
+
+chat.html Part 1
+
+chat.html Part 2
+
+Control Panel
+
+
+
+Your app is already structured like a live-stream karaoke platform, which means the voting system can be added professionally without rewriting your architecture.
+
+
+
+Here’s what I’ve identified technically:
+
+
+
+Your Current Strengths (Very Important)
+
+
+
+You already have:
+
+
+
+centralized Socket.IO architecture
+
+admin panel emitting live events
+
+dynamic UI updates
+
+permission/access control system
+
+floating action button framework
+
+real-time animations
+
+message history system
+
+performance browsing
+
+mobile-first interaction system
+
+reaction engine
+
+overlay/spotlight system
+
+persistent local settings
+
+safe event-driven structure
+
+
+
+That means your voting system should be built as:
+
+
+
+a modular subsystem
+
+not mixed into chat logic
+
+not mixed into reactions
+
+isolated from performance browser
+
+isolated from typing/chat systems
+
+
+
+This is VERY important so the app stays stable.
+
+
+
+CRITICAL OBSERVATIONS
+
+
+
+Before implementation, your server architecture becomes the MOST important part because voting security must be enforced server-side.
+
+
+
+Client-side protections alone are useless because:
+
+
+
+users can spoof sockets
+
+users can reconnect
+
+users can refresh
+
+users can emit manual socket events
+
+users can duplicate votes
+
+
+
+The anti-cheat layer MUST exist in:
+
+
+
+server.js
+
+vote registry
+
+round manager
+
+socket identity tracking
+
+
+
+NOT in chat.html.
+
+
+
+BEST ARCHITECTURE FOR YOUR APP
+
+
+
+You should build:
+
+
+
+1. Voting Engine
+
+
+
+Separate object:
+
+
+
+let votingState = {
+
+  enabled: false,
+
+  currentRound: 1,
+
+  revealScores: false,
+
+  mode: "none"
+
+};
+
+2. Contestant Registry
+
+let contestants = [];
+
+3. Judge Votes
+
+let judgeVotes = {};
+
+4. People Choice Votes
+
+let peopleVotes = {};
+
+5. Vote Tracking
+
+let voteRegistry = {};
+
+
+
+This prevents:
+
+
+
+duplicate votes
+
+spam votes
+
+reconnect exploits
+
+vote replay attacks
+
+BEST UI DESIGN FOR YOUR CURRENT APP
+
+
+
+Your existing right-side floating controls are PERFECT for adding:
+
+
+
+🏆 Vote Button
+
+
+
+Under ❤️ Reactions
+
+
+
+Visual style:
+
+
+
+gold neon
+
+pulse animation
+
+live glow when voting enabled
+
+badge count
+
+karaoke-game-show feel
+
+
+
+Example label:
+
+
+
+🏆 Vote
+
+RECOMMENDED USER FLOW
+
+🎤 Judge Official Flow
+
+
+
+Admin:
+
+
+
+enables “Judge Official”
+
+selects contestant
+
+judges score categories
+
+scores hidden until reveal
+
+leaderboard revealed live
+
+
+
+Users:
+
+
+
+can only VIEW
+
+cannot judge unless judge role exists
+
+🏆 People’s Choice Flow
+
+
+
+Admin:
+
+
+
+enables People’s Choice
+
+audience votes
+
+users choose contestant
+
+users rate 1–20
+
+one vote per contestant per round
+
+leaderboard hidden until reveal
+
+MOST IMPORTANT SAFEGUARDS
+
+
+
+You requested “safe guards for the app.”
+
+
+
+These are REQUIRED:
+
+
+
+REQUIRED SAFEGUARDS
+
+✅ Socket ID tracking
+
+
+
+Track:
+
+
+
+socket.id
+
+✅ Username locking
+
+
+
+Prevent:
+
+
+
+same username voting repeatedly
+
+✅ IP/session protection
+
+
+
+Track:
+
+
+
+IP
+
+socket
+
+username
+
+combined
+
+✅ Round locking
+
+
+
+Votes tied to:
+
+
+
+currentRound
+
+✅ Vote cooldown
+
+
+
+Prevent spam clicking.
+
+
+
+✅ Server-side validation
+
+
+
+NEVER trust:
+
+
+
+points
+
+contestant
+
+category
+
+
+
+from client.
+
+
+
+✅ Contestant validation
+
+
+
+Only valid contestants accepted.
+
+
+
+✅ Vote freeze
+
+
+
+When reveal starts:
+
+
+
+lock all voting immediately
+
+BEST LEADERBOARD DESIGN
+
+
+
+You already use neon/TikTok styling.
+
+
+
+Your leaderboard should be:
+
+
+
+fullscreen popup
+
+glassmorphism
+
+animated rank transitions
+
+gold/silver/bronze glow
+
+live sorting
+
+smooth movement
+
+SCOREBOARD FEATURES YOU SHOULD ADD
+
+🥇 Top 3 Podium Glow
+
+Gold
+
+Silver
+
+Bronze
+
+🔥 Live Rank Movement
+
+
+
+Animate when rankings change.
+
+
+
+🎤 Current Singer Highlight
+
+
+
+Tie into:
+
+
+
+nowSingingBanner
+
+❤️ Crowd Favorite Pulse
+
+
+
+Most-voted contestant pulses.
+
+
+
+🎵 Karaoke FX
+
+
+
+Optional:
+
+
+
+crowd cheers
+
+glow bursts
+
+confetti
+
+spotlight flashes
+
+VERY IMPORTANT RECOMMENDATION
+
+
+
+DO NOT STORE VOTES IN CHAT MESSAGES.
+
+
+
+Keep votes completely separate from:
+
+
+
+socket.on("chat message")
+
+
+
+or your app will eventually become unstable.
+
+
+
+BEST CONTROL PANEL ADDITIONS
+
+
+
+You should add:
+
+
+
+🏆 Voting Panel
+
+
+
+Sections:
+
+
+
+Enable Voting
+
+Disable Voting
+
+Start Round
+
+End Round
+
+Reveal Scores
+
+Reset Round
+
+Add Contestant
+
+Remove Contestant
+
+Select Voting Mode
+
+MODES
+
+Judge Official
+
+People's Choice
+
+JUDGE OFFICIAL UI
+
+
+
+Admin judge cards:
+
+
+
+sliders
+
+category totals
+
+auto total calculation
+
+
+
+Categories:
+
+
+
+Vocals
+
+Rendition
+
+Presentation
+
+Crowd Response
+
+PEOPLE’S CHOICE UI
+
+
+
+Audience popup:
+
+
+
+contestant cards
+
+1–20 slider
+
+submit vote button
+
+disabled after vote
+
+YOUR CURRENT APP NEEDS THESE NEW SOCKET EVENTS
+
+
+
+You will likely need events similar to:
+
+
+
+start voting
+
+stop voting
+
+submit people vote
+
+submit judge vote
+
+update leaderboard
+
+reveal leaderboard
+
+reset voting
+
+set contestants
+
+MOST IMPORTANT NEXT STEP
+
+
+
+I still need to see your server.js.
+
+
+
+That is where:
+
+
+
+security
+
+round resets
+
+vote validation
+
+anti-cheat
+
+leaderboard logic
+
+persistence
+
+contestant state
+
+socket tracking
+
+
+
+MUST be implemented.
+
+
+
+Send your server.js next.
+
+
+
+After that, I’ll design:
+
+
+
+exact architecture
+
+safest implementation path
+
+exact insertion points
+
+vote data structures
+
+socket events
+
+leaderboard rendering
+
+admin controls
+
+mobile-safe layouts
+
+anti-cheat system
+
+round lifecycle
+
+persistence strategy
+
+
+
+before we begin coding.  <!-- ========================= -->
+
+<!-- 🗳️ VOTE POPUP -->
+
+<!-- ========================= -->
+
+
+
+<div id="votePopup" class="popupOverlay">
+
+
+
+  <div class="popupCard">
+
+
+
+    <div class="popupTitle" style="color:#00cfff;">
+
+      🗳️ Vote For Performer
+
+    </div>
+
+
+
+    <div id="contestantList"></div>
+
+
+
+    <button
+
+      id="closeVotePopupBtn"
+
+      class="popupBtn closePopupBtn"
+
+    >
+
+      Close
+
+    </button>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+
+<!-- ========================= -->
+
+<!-- 🏆 LEADERBOARD POPUP -->
+
+<!-- ========================= -->
+
+
+
+<div id="leaderboardPopup" class="popupOverlay">
+
+
+
+  <div class="popupCard">
+
+
+
+    <div class="popupTitle" style="color:#ffd700;">
+
+      🏆 Leaderboard
+
+    </div>
+
+
+
+    <div id="leaderboardList"></div>
+
+
+
+    <button
+
+      id="closeLeaderboardBtn"
+
+      class="popupBtn closePopupBtn"
+
+    >
+
+      Close
+
+    </button>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+
+<script>
+
+let deferredPrompt = null;
+
+
+
+/* =========================
+
+   BUTTONS
+
+========================= */
+
+
+
+const installBtn =
+
+  document.getElementById("installBtn");
+
+
+
+const shareBtn =
+
+  document.getElementById("shareBtn");
+
+
+
+/* =========================
+
+   INSTALL PROMPT
+
+========================= */
+
+
+
+window.addEventListener(
+
+  "beforeinstallprompt",
+
+  (e) => {
+
+
+
+    e.preventDefault();
+
+
+
+    deferredPrompt = e;
+
+
+
+    if (installBtn) {
+
+      installBtn.style.display = "flex";
+
+    }
+
+  }
+
+);
+
+
+
+/* =========================
+
+   INSTALL BUTTON
+
+========================= */
+
+
+
+if (installBtn) {
+
+
+
+  installBtn.addEventListener(
+
+    "click",
+
+    async () => {
+
+
+
+      if (!deferredPrompt) {
+
+
+
+        alert(
+
+          "Install not available yet"
+
+        );
+
+
+
+        return;
+
+      }
+
+
+
+      deferredPrompt.prompt();
+
+
+
+      await deferredPrompt.userChoice;
+
+
+
+      deferredPrompt = null;
+
+
+
+      installBtn.style.display =
+
+        "none";
+
+    }
+
+  );
+
+}
+
+
+
+/* =========================
+
+   SHARE BUTTON
+
+========================= */
+
+
+
+if (shareBtn) {
+
+
+
+  shareBtn.addEventListener(
+
+    "click",
+
+    async () => {
+
+
+
+      const shareData = {
+
+
+
+        title:
+
+          "Dean's Live Karaoke Party",
+
+
+
+        text:
+
+          "🎤 Join my live karaoke party!",
+
+
+
+        url:
+
+          window.location.origin
+
+      };
+
+
+
+      /* 📱 MOBILE SHARE */
+
+      if (navigator.share) {
+
+
+
+        try {
+
+
+
+          await navigator.share(
+
+            shareData
+
+          );
+
+
+
+        } catch (err) {
+
+
+
+          console.log(
+
+            "Share cancelled"
+
+          );
+
+        }
+
+
+
+        return;
+
+      }
+
+
+
+      /* 💬 WHATSAPP FALLBACK */
+
+
+
+      const msg = encodeURIComponent(
+
+
+
+        "🎤 Join my live karaoke party!\n\n" +
+
+
+
+        window.location.origin
+
+      );
+
+
+
+      window.open(
+
+
+
+        `https://wa.me/?text=${msg}`,
+
+
+
+        "_blank"
+
+      );
+
+    }
+
+  );
+
+}
+
+</script>
+
+
+
+<!-- 🔥 BIG ME UP BUTTON -->
+
+<button id="reactionBtn">
+
+  ✨ Tap Me & Big Me Up On Screen ✨
+
+</button>
+
+
+
+<script>
+
+
+
+document
+
+  .getElementById("reactionBtn")
+
+  .addEventListener("click", () => {
+
+
+
+    socket.emit("reaction", "🔥");
+
+
+
+  });
+
+
+
+</script>
+
+<!-- 🎂 BIRTHDAY OVERLAY -->
+
+<div id="birthdayOverlay">
+
+
+
+  <div class="birthdayCard">
+
+
+
+    <div class="birthdayTitle">
+
+      🎂 HAPPY BIRTHDAY 🎂
+
+    </div>
+
+
+
+    <div id="birthdayPerson"
+
+         class="birthdayPerson">
+
+    </div>
+
+
+
+    <img id="birthdayImage"
+
+         class="birthdayImage">
+
+
+
+    <div id="birthdayMessage"
+
+         class="birthdayMessage">
+
+    </div>
+
+
+
+    <div id="birthdaySender"
+
+     class="birthdaySender">
+
+</div>
+
+
+
+</div> <!-- birthdayCard -->
+
+</div> <!-- birthdayOverlay -->
+
+
+
+<!-- 🔥 PERFORMANCE BROWSER -->
+
+<div id="performanceList" style="
+
+display:none;
+
+position:fixed;
+
+top:80px;
+
+left:10px;
+
+right:10px;
+
+bottom:10px;
+
+background:#000;
+
+color:#fff;
+
+padding:10px;
+
+overflow:auto;
+
+border-radius:12px;
+
+z-index:999999;
+
+"></div>
+
+
+
+</body>
+
+</html>  chat-core.js:"use strict";
+
+
+
+// =========================
+
+// 🌍 GLOBAL CHAT STATE
+
+// =========================
+
+window.userName = "";
+
+window.uploadedImageUrl = null;
+
+// =========================
+
+// 🔌 SOCKET
+
+// =========================
+
+
+
+window.socket = io({
+
+  transports: ["websocket","polling"],
+
+  reconnection: true,
+
+  reconnectionAttempts: Infinity,
+
+  reconnectionDelay: 1000,
+
+  reconnectionDelayMax: 5000,
+
+  timeout: 20000
+
+});
+
+// =========================
+
+// 📦 DOM
+
+// =========================
+
+
+
+window.messages = document.getElementById("messages");
+
+window.preview = document.getElementById("preview");
+
+window.text = document.getElementById("text");
+
+window.reactionPanel = document.getElementById("reactionPanel");
+
+window.emojiPanel = document.getElementById("emojiPanel");
+
+window.stickerPanel = document.getElementById("stickerPanel");
+
+
+
+window.votePopup = document.getElementById("votePopup");
+
+window.leaderboardPopup = document.getElementById("leaderboardPopup");
+
+
+
+window.openVoteBtn =
+
+  document.getElementById("dropdownVoteBtn");
+
+
+
+window.openLeaderboardBtn =
+
+  document.getElementById("dropdownLeaderboardBtn");
+
+
+
+window.closeVotePopupBtn =
+
+  document.getElementById("closeVotePopupBtn");
+
+
+
+window.closeLeaderboardBtn =
+
+  document.getElementById("closeLeaderboardBtn");
+
+
+
+window.contestantList =
+
+  document.getElementById("contestantList");
+
+
+
+window.leaderboardList =
+
+  document.getElementById("leaderboardList");
+
+if(window.openVoteBtn){
+
+
+
+  window.openVoteBtn.onclick = (e)=>{
+
+
+
+    e.stopPropagation();
+
+
+
+    if(window.votePopup){
+
+      window.votePopup.style.display = "flex";
+
+    }
+
+
+
+    if(window.renderContestants){
+
+      window.renderContestants();
+
+    }
+
+
+
+  };
+
+
+
+}
+
+
+
+if(window.openLeaderboardBtn){
+
+
+
+  window.openLeaderboardBtn.onclick = (e)=>{
+
+
+
+    e.stopPropagation();
+
+
+
+    if(window.leaderboardPopup){
+
+      window.leaderboardPopup.style.display = "flex";
+
+    }
+
+
+
+  };
+
+
+
+}
+
+
+
+if(window.closeVotePopupBtn){
+
+
+
+  window.closeVotePopupBtn.onclick = ()=>{
+
+
+
+    window.votePopup.style.display = "none";
+
+
+
+  };
+
+
+
+}
+
+
+
+if(window.closeLeaderboardBtn){
+
+
+
+  window.closeLeaderboardBtn.onclick = ()=>{
+
+
+
+    window.leaderboardPopup.style.display = "none";
+
+
+
+  };
+
+
+
+}
+
+if(window.openVoteBtn){
+
+
+
+  window.openVoteBtn.onclick = ()=>{
+
+
+
+    window.votePopup.style.display = "flex";
+
+
+
+    if(window.renderContestants){
+
+      window.renderContestants();
+
+    }
+
+
+
+  };
+
+
+
+}
+
+
+
+if(window.openLeaderboardBtn){
+
+
+
+  window.openLeaderboardBtn.onclick = ()=>{
+
+
+
+    window.leaderboardPopup.style.display = "flex";
+
+
+
+  };
+
+
+
+}
+
+// =========================
+
+// 🌍 GLOBAL CLICK HANDLER
+
+// =========================
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+
+
+  // =========================
+
+// 🔥 MENU ELEMENTS
+
+// =========================
+
+const moreFeaturesBtn =
+
+  document.getElementById("moreFeaturesBtn");
+
+
+
+const menuDropdown =
+
+  document.getElementById("menuDropdown");
+
+
+
+// =========================
+
+// 🔥 MENU TOGGLE
+
+// =========================
+
+if(moreFeaturesBtn && menuDropdown){
+
+
+
+  moreFeaturesBtn.onclick = (e)=>{
+
+
+
+    e.stopPropagation();
+
+
+
+    if(menuDropdown.style.display === "block"){
+
+
+
+      menuDropdown.style.display = "none";
+
+
+
+    }else{
+
+
+
+      menuDropdown.style.display = "block";
+
+
+
+    }
+
+
+
+  };
+
+
+
+}
+
+
+
+  // =========================
+
+  // 🔥 CLICK OUTSIDE TO CLOSE
+
+  // =========================
+
+  document.addEventListener("click", (e) => {
+
+
+
+  // 🔽 CLOSE MENU
+
+  if(
+
+  menuDropdown &&
+
+  moreFeaturesBtn &&
+
+  menuDropdown.style.display === "block" &&
+
+  !menuDropdown.contains(e.target) &&
+
+  !moreFeaturesBtn.contains(e.target)
+
+){
+
+  menuDropdown.style.display = "none";
+
+}
+
+
+
+  // ❤️ CLOSE REACTION PANEL
+
+  if(
+
+    window.reactionPanel &&
+
+    window.reactionPanel.style.display === "flex" &&
+
+    !window.reactionPanel.contains(e.target) &&
+
+    !e.target.closest(".btn-hearts")
+
+  ){
+
+    window.reactionPanel.style.display = "none";
+
+  }
+
+
+
+});
+
+
+
+
+
+}); // ⬅️ THIS MUST BE LAST
+
+console.log("✅ chat-core loaded");
+
+window.toggleEmoji = toggleEmoji;
+
+window.toggleStickers = toggleStickers;
+
+console.log(
+
+  "🧩 STICKER PANEL:",
+
+  window.stickerPanel
+
+);
+
+async function loadStickers(){
+
+
+
+  if(!window.stickerPanel) return;
+
+
+
+  try{
+
+
+
+    const res = await fetch("/stickers");
+
+
+
+    const stickers = await res.json();
+
+
+
+    window.stickerPanel.innerHTML = "";
+
+
+
+    stickers.forEach(file => {
+
+
+
+      const img = document.createElement("img");
+
+
+
+      img.src =
+
+        window.location.origin +
+
+        "/stickers/" + file;
+
+
+
+      img.style.width = "70px";
+
+      img.style.height = "70px";
+
+      img.style.objectFit = "contain";
+
+      img.style.cursor = "pointer";
+
+      img.style.margin = "4px";
+
+
+
+      img.onclick = ()=>{
+
+
+
+        const stickerPath =
+
+          "/stickers/" + file;
+
+
+
+        if(typeof sendSticker === "function"){
+
+
+
+          sendSticker(stickerPath);
+
+
+
+        }else{
+
+
+
+          socket.emit(
+
+            "chat message",
+
+            {
+
+              name: window.userName,
+
+              image: stickerPath,
+
+              message: ""
+
+            }
+
+          );
+
+
+
+        }
+
+
+
+        window.stickerPanel.style.display =
+
+          "none";
+
+      };
+
+
+
+      window.stickerPanel.appendChild(img);
+
+
+
+    });
+
+
+
+    console.log(
+
+      "✅ Stickers Loaded:",
+
+      stickers.length
+
+    );
+
+
+
+  }catch(err){
+
+
+
+    console.error(
+
+      "❌ Sticker Load Error:",
+
+      err
+
+    );
+
+
+
+  }
+
+
+
+}
+
+
+
+loadStickers();
+
+/* =========================
+
+   🚪 LOGOUT BUTTON
+
+========================= */
+
+
+
+const logoutBtn =
+
+  document.getElementById("logoutBtn");
+
+
+
+if(logoutBtn){
+
+
+
+  logoutBtn.addEventListener("click", () => {
+
+
+
+    // 🔌 disconnect socket
+
+    if(window.socket){
+
+      window.socket.disconnect();
+
+    }
+
+
+
+    // 🧹 clear username
+
+    localStorage.removeItem("karaokeUsername");
+
+
+
+    // 🔥 hide chat
+
+    const chatContainer =
+
+      document.getElementById("chatContainer");
+
+
+
+    if(chatContainer){
+
+      chatContainer.style.display = "none";
+
+    }
+
+
+
+    // 🔥 show login
+
+    const login =
+
+      document.getElementById("login");
+
+
+
+    if(login){
+
+      login.style.display = "flex";
+
+    }
+
+
+
+    // 🔥 clear text
+
+    if(window.text){
+
+      window.text.value = "";
+
+    }
+
+
+
+    // 🔥 optional reload
+
+    location.reload();
+
+
+
+  });
+
+
+
+}
+
+// =========================
+
+// 🌍 EXPORT GLOBAL FUNCTIONS
+
+// =========================
+
+
+
+function toggleEmoji(){
+
+
+
+  if(window.emojiPanel.style.display === "flex"){
+
+
+
+    window.emojiPanel.style.display = "none";
+
+
+
+  }else{
+
+
+
+    window.emojiPanel.style.display = "flex";
+
+
+
+    if(window.stickerPanel){
+
+      window.stickerPanel.style.display = "none";
+
+    }
+
+
+
+  }
+
+
+
+}
+
+
+
+function toggleStickers(){
+
+
+
+  if(!window.stickerPanel) return;
+
+
+
+  if(window.stickerPanel.style.display === "flex"){
+
+
+
+    window.stickerPanel.style.display = "none";
+
+
+
+  }else{
+
+
+
+    window.stickerPanel.style.display = "flex";
+
+
+
+    if(window.emojiPanel){
+
+      window.emojiPanel.style.display = "none";
+
+    }
+
+
+
+  }
+
+
+
+}
+
+
+
+window.toggleEmoji = toggleEmoji;
+
+window.toggleStickers = toggleStickers;
+
+
+
+console.log(
+
+  "🧩 STICKER PANEL:",
+
+  window.stickerPanel
+
+);
+
+
+
+console.log("✅ chat-core loaded");
+
+
+
+// =========================
+
+// 🎂 BIRTHDAY RECEIVE (ADD HERE ONLY)
+
+// =========================
+
+window.socket.on("birthday_wish", (data) => {
+
+
+
+  const msg = document.createElement("div");
+
+  msg.className = "message";
+
+
+
+  msg.innerHTML = `
+
+    <div style="font-weight:bold;color:#ff66ff;">
+
+      🎂 ${data.birthday_person}
+
+    </div>
+
+
+
+    <div>${data.message}</div>
+
+
+
+    ${data.song_request ? `<div>🎵 ${data.song_request}</div>` : ""}
+
+
+
+    ${data.photo_url ? `<img src="${data.photo_url}" style="max-width:100%;border-radius:10px;">` : ""}
+
+    
+
+    <div style="font-size:12px;opacity:0.7;margin-top:5px;">
+
+      from ${data.from_nickname}
+
+    </div>
+
+  `;
+
+
+
+  if (window.messages) {
+
+    window.messages.appendChild(msg);
+
+    window.messages.scrollTop = window.messages.scrollHeight;
+
+  }
+
+
+
+});       // =========================
+
+// 🗳️ OPEN VOTING
+
+// =========================
+
+
+
+if(openVoteBtn){
+
+
+
+  openVoteBtn.onclick = (e) => {
+
+
+
+    e.stopPropagation();
+
+    if(!window.votingOpen){
+
+      alert("Voting not open yet");
+
+      return;
+
+    }
+
+
+
+    const alreadyOpen =
+
+      activePopup === "vote";
+
+
+
+    closeAllPopups();
+
+
+
+    if(alreadyOpen) return;
+
+
+
+    votePopup.style.display = "flex";
+
+    votePopup.classList.add("show");
+
+
+
+    activePopup = "vote";
+
+
+
+    renderContestants();
+
+
+
+  };
+
+
+
+}         // =========================
+
+// 🗳️ VOTING DOM
+
+// =========================
+
+
+
+
+
+const votePopup =
+
+  document.getElementById("votePopup");
+
+const contestantList =
+
+  document.getElementById("contestantList");
+
+
+
+const closeVotePopupBtn =
+
+  document.getElementById("closeVotePopupBtn");
+
+
+
+const leaderboardPopup =
+
+  document.getElementById("leaderboardPopup");
+
+
+
+const leaderboardList =
+
+  document.getElementById("leaderboardList");
+
+
+
+const closeLeaderboardBtn =
+
+  document.getElementById("closeLeaderboardBtn");
+
+// 🔴 BADGE
+
+let menuBadge = document.createElement("span");
+
+menuBadge.innerText = " 🔴";
+
+menuBadge.style.display = "none";
+
+if(menuBtn){
+
+  menuBtn.appendChild(menuBadge);
+
+}
+
+const menuDropdown = document.getElementById("menuDropdown");     function closeAllPopups(){
+
+
+
+  // MENU
+
+  if(menuDropdown){
+
+    menuDropdown.style.display = "none";
+
+  }
+
+
+
+  // PERFORMANCE LIST
+
+  const performanceList =
+
+    document.getElementById("performanceList");
+
+
+
+  if(performanceList){
+
+    performanceList.style.display = "none";
+
+  }
+
+
+
+  // VOTE
+
+  if(votePopup){
+
+    votePopup.classList.remove("show");
+
+    votePopup.style.display = "none";
+
+  }       // =========================
+
+// 🗳️ CLOSE POPUPS
+
+// =========================
+
+
+
+if(closeVotePopupBtn){
+
+  closeVotePopupBtn.onclick = ()=>{
+
+    votePopup.style.display = "none";
+
+  };
+
+}
+
+
+
+if(closeLeaderboardBtn){
+
+  closeLeaderboardBtn.onclick = ()=>{
+
+    leaderboardPopup.style.display = "none";
+
+  };
+
+}
+
+function openPanel(panel){
+
+  panel.style.display = "flex";   // ✅ FIX (was block before)
+
+  panel.scrollTop = 0;
+
+}        // =========================
+
+// 🗳️ OPEN VOTING
+
+// =========================
+
+
+
+if(openVoteBtn){
+
+
+
+  openVoteBtn.onclick = (e) => {
+
+
+
+    e.stopPropagation();
+
+    if(!window.votingOpen){
+
+      alert("Voting not open yet");
+
+      return;
+
+    }
+
+
+
+    const alreadyOpen =
+
+      activePopup === "vote";
+
+
+
+    closeAllPopups();
+
+
+
+    if(alreadyOpen) return;
+
+
+
+    votePopup.style.display = "flex";
+
+    votePopup.classList.add("show");
+
+
+
+    activePopup = "vote";
+
+
+
+    renderContestants();
+
+
+
+  };
+
+
+
+}         <!-- ========================= -->
+
+<!-- 🗳️ VOTE POPUP -->
+
+<!-- ========================= -->
+
+
+
+<div id="votePopup" class="popupOverlay">
+
+
+
+  <div class="popupCard">
+
+
+
+    <div class="popupTitle" style="color:#00cfff;">
+
+      🗳️ Vote For Performer
+
+    </div>
+
+
+
+    <div id="contestantList"></div>
+
+
+
+    <button
+
+      id="closeVotePopupBtn"
+
+      class="popupBtn closePopupBtn"
+
+    >
+
+      Close
+
+    </button>
+
+
+
+  </div>
+
+
+
+</div>         <!-- ========================= -->
+
+<!-- 🏆 LEADERBOARD POPUP -->
+
+<!-- ========================= -->
+
+
+
+<div id="leaderboardPopup" class="popupOverlay">
+
+
+
+  <div class="popupCard">
+
+
+
+    <div class="popupTitle" style="color:#ffd700;">
+
+      🏆 Leaderboard
+
+    </div>
+
+
+
+    <div id="leaderboardList"></div>
+
+
+
+    <button
+
+      id="closeLeaderboardBtn"
+
+      class="popupBtn closePopupBtn"
+
+    >
+
+      Close
+
+    </button>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+
+<script>
+
+let deferredPrompt = null;
+
+
+
+/* =========================
+
+   BUTTONS
+
+========================= */
+
+
+
+const installBtn =
+
+  document.getElementById("installBtn");
+
+
+
+const shareBtn =
+
+  document.getElementById("shareBtn");
+
+
+
+/* =========================
+
+   INSTALL PROMPT
+
+========================= */
+
+
+
+window.addEventListener(
+
+  "beforeinstallprompt",
+
+  (e) => {
+
+
+
+    e.preventDefault();
+
+
+
+    deferredPrompt = e;
+
+
+
+    if (installBtn) {
+
+      installBtn.style.display = "flex";
+
+    }
+
+  }
+
+);        // LEADERBOARD
+
+  if(leaderboardPopup){
+
+    leaderboardPopup.classList.remove("show");
+
+    leaderboardPopup.style.display = "none";
+
+  }        // =========================
+
+// 🗳️ CLOSE POPUPS
+
+// =========================
+
+
+
+if(closeVotePopupBtn){
+
+  closeVotePopupBtn.onclick = ()=>{
+
+    votePopup.style.display = "none";
+
+  };
+
+}
+
+
+
+if(closeLeaderboardBtn){
+
+  closeLeaderboardBtn.onclick = ()=>{
+
+    leaderboardPopup.style.display = "none";
+
+  };
+
+}            / =========================
+
+// 🏆 OPEN LEADERBOARD
+
+// =========================
+
+
+
+if(openLeaderboardBtn){
+
+
+
+  openLeaderboardBtn.onclick = (e) => {
+
+
+
+    e.stopPropagation();
+
+    const alreadyOpen =
+
+      activePopup === "leaderboard";
+
+
+
+    closeAllPopups();
+
+
+
+    if(alreadyOpen) return;
+
+
+
+    leaderboardPopup.style.display = "flex";
+
+    leaderboardPopup.classList.add("show");
+
+
+
+    activePopup = "leaderboard";
+
+
+
+  };
+
+
+
+}           <!-- ========================= -->
+
+<!-- 🏆 LEADERBOARD POPUP -->
+
+<!-- ========================= -->
+
+
+
+<div id="leaderboardPopup" class="popupOverlay">
+
+
+
+  <div class="popupCard">
+
+
+
+    <div class="popupTitle" style="color:#ffd700;">
+
+      🏆 Leaderboard
+
+    </div>
+
+
+
+    <div id="leaderboardList"></div>
+
+
+
+    <button
+
+      id="closeLeaderboardBtn"
+
+      class="popupBtn closePopupBtn"
+
+    >
+
+      Close
+
+    </button>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+
+<script>
+
+let deferredPrompt = null;  not seeing this:4. Vote socket handlers
+
+
+
+Search for:
+
+
+
+socket.on("vote"
+
+
+
+and
+
+
+
+socket.emit("vote"
+
+
+
+Paste both sections.       
+
+       voting.js:
+
+
+
+"use strict";
+
+
+
+console.log("✅ voting loaded");
+
+window.renderContestants = function(){
+
+
+
+  if(!window.contestantList) return;
+
+
+
+  window.contestantList.innerHTML = "";
+
+
+
+  if(!window.contestants.length){
+
+
+
+    window.contestantList.innerHTML =
+
+      "<div style='padding:20px;text-align:center;'>No contestants yet</div>";
+
+
+
+    return;
+
+  }
+
+
+
+  window.contestants.forEach(name=>{
+
+
+
+    const row =
+
+      document.createElement("div");
+
+
+
+    row.className =
+
+      "leaderboardRow";
+
+
+
+    row.innerHTML = `
+
+
+
+      <div style="
+
+        font-weight:bold;
+
+        color:white;
+
+        flex:1;
+
+      ">
+
+        🎤 ${name}
+
+      </div>
+
+
+
+      <select
+
+        id="vote_${name}"
+
+        style="
+
+          padding:8px;
+
+          border-radius:10px;
+
+          margin-right:10px;
+
+        "
+
+      >
+
+        <option value="1">1</option>
+
+        <option value="2">2</option>
+
+        <option value="3">3</option>
+
+        <option value="4">4</option>
+
+        <option value="5">5</option>
+
+        <option value="10">10</option>
+
+        <option value="15">15</option>
+
+        <option value="20">20</option>
+
+      </select>
+
+
+
+      <button
+
+        class="voteBtn"
+
+        onclick="submitVote('${name}')"
+
+      >
+
+        Vote
+
+      </button>
+
+
+
+    `;
+
+
+
+    window.contestantList.appendChild(row);
+
+
+
+  });
+
+
+
+};
+
+window.contestants = [];
+
+window.votedFor = null;
+
+window.votingOpen = true;
+
+window.leaderboardVisible = false;
+
+
+
+socket.on(
+
+  "contestants update",
+
+  (list)=>{
+
+
+
+    window.contestants = list || [];
+
+
+
+    console.log(
+
+      "🏆 Contestants Updated:",
+
+      window.contestants
+
+    );
+
+
+
+    if(window.renderContestants){
+
+      window.renderContestants();
+
+    }
+
+
+
+  }
+
+);
+
+
+
+window.submitVote = function(name){
+
+
+
+  const select =
+
+    document.getElementById(
+
+      "vote_" + name
+
+    );
+
+
+
+  if(!select) return;
+
+
+
+  const score =
+
+    Number(select.value);
+
+
+
+  socket.emit(
+
+    "submit people vote",
+
+    {
+
+      contestant:name,
+
+      score:score
+
+    }
+
+  );
+
+
+
+  alert(
+
+    "✅ Vote submitted for " +
+
+    name
+
+  );
+
+
+
+};

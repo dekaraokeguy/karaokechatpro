@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Karaoke Overlay</title>
+
+<script src="/socket.io/socket.io.js"></script>
+<style>
+@keyframes overlayPop{
+
+  from{
+    transform:
+      scale(0.92)
+      translateY(10px);
+
+    opacity:0;
+  }
+
+  to{
+    transform:
+      scale(1)
+      translateY(0);
+
+    opacity:1;
+  }
+
+}
+
+body{
+  margin:0;
+  overflow:auto;
+  font-family:Arial;
+  background:transparent;
+
+  width:100vw;
+  height:100vh;
+
+  position:relative;
+}
+#reactionOverlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999999;
+  overflow: hidden;
+  will-change: transform;
+}
+/* SPLASH */
+#splash{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+#splash img{
+  width:300px;
+  animation:flyIn 1.5s ease-out forwards;
+}
+
+@keyframes flyIn{
+  0%{transform:scale(0.2) translateY(200px); opacity:0;}
+  60%{transform:scale(1.1); opacity:1;}
+  100%{transform:scale(1);}
+}
+
+#chat{
+  position:absolute;
+  bottom:20px;
+  left:20px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:10px;
+
+  width:35%;
+
+  max-height:90vh;
+
+  overflow-y:auto;
+  overflow-x:hidden;
+
+  padding-right:8px;
+  padding-bottom:20px;
+
+  pointer-events:auto;
+
+  scroll-behavior:smooth;
+
+  contain:layout style paint;
+
+  will-change:scroll-position;
+}.msgWrap{
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+}
+
+.overlayAvatar{
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.message{
+  padding:10px 14px;
+
+  color:#fff;
+
+  max-width:100%;
+
+  width:fit-content;
+
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+
+  backdrop-filter:blur(8px);
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,0.4);
+
+  pointer-events:auto;
+
+  transition:
+    height 0.15s ease,
+    transform 0.15s ease;
+
+  transform:translateZ(0);
+
+  will-change:transform,height;
+
+  animation:overlayPop 0.22s ease;
+}
+.message{
+  position:relative;
+  z-index:2;
+}
+.message img{
+  display:block;
+  margin-top:6px;
+  border-radius:10px;
+
+  max-width:100%;
+  height:auto;
+
+  max-height:300px;   /* ✅ prevent oversized crop */
+  object-fit:contain; /* ✅ ALWAYS show full image */
+}
+
+.bigEmoji{
+  font-size:120px;
+  text-align:center;
+  pointer-events:none;
+}
+.multiEmoji{
+  font-size:60px;
+  line-height:1.2;
+}
+</style>
+</head>
+
+<body>
+
+<div id="splash">
+  <img src="/logo.png">
+</div>
+
+<div id="reactionOverlay"></div>
+
+<div id="chat"></div>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+
+  const imgViewer =
+  document.getElementById("overlayImgViewer");
+
+const imgViewerImg =
+  document.getElementById("overlayImgViewerImg");
+
+  if(!imgViewer || !imgViewerImg) return;
+
+  // OPEN
+  document.addEventListener("click", function(e){
+    if(e.target.tagName === "IMG" && e.target.classList.contains("msgImg")){
+      imgViewer.style.display = "flex";
+      imgViewerImg.src = e.target.src;
+    }
+  });
+
+  // CLOSE
+  imgViewer.addEventListener("click", ()=>{
+    imgViewer.style.display = "none";
+    imgViewerImg.src = "";
+  });
+
+});
+const socket = io(window.location.origin,{
+  transports:["websocket","polling"]
+});
+// 🔥 DEBUG — ADD RIGHT HERE
+socket.onAny((event, data)=>{
+  console.log("📡 OVERLAY RECEIVED:", event, data);
+});
+socket.on("connect", ()=>{
+  console.log("✅ OVERLAY CONNECTED");
+});
+
+
+// 🔥 EMOJI REACTIONS (FROM CHAT)
+// 🔥 UNIVERSAL REACTION SYSTEM (REPLACE HEARTS BLOCK)
+
+function spawnReaction(emoji){
+
+  const overlay = document.getElementById("reactionOverlay");
+  if(!overlay) return;
+
+  // 🔥 MUCH BIGGER BURST
+  const total = 12 + Math.floor(Math.random() * 10);
+
+  for(let i = 0; i < total; i++){
+
+    setTimeout(()=>{
+
+      const el = document.createElement("div");
+      el.textContent = emoji;
+
+      // ❤️ START POSITION (CONTROLLED)
+const startX = settings.reactionX ?? (window.innerWidth - 120);
+const startY = settings.reactionY ?? (window.innerHeight - 120);
+
+      // 🎲 RANDOM CURVES
+      const driftX = (Math.random() - 0.5) * 260;
+      const driftMid = (Math.random() - 0.5) * 140;
+
+      const rise = 500 + Math.random() * 350;
+
+      // 🎲 RANDOM SCALE
+      const startScale = 0.5 + Math.random() * 0.5;
+      const midScale = 1.1 + Math.random() * 0.6;
+
+      // 🎨 STYLE
+      el.style.position = "absolute";
+      el.style.left = startX + "px";
+      el.style.top = startY + "px";
+
+      el.style.fontSize =
+        (26 + Math.random() * 34) + "px";
+
+      el.style.pointerEvents = "none";
+      el.style.userSelect = "none";
+      el.style.zIndex = "999999";
+
+      overlay.appendChild(el);
+
+      // 🔥 BEAUTIFUL FLOAT ANIMATION
+      requestAnimationFrame(()=>{
+
+        el.animate([
+
+          // 🌱 START
+          {
+            transform: `
+              translate(0px,0px)
+              scale(${startScale})
+              rotate(0deg)
+            `,
+            opacity: 0
+          },
+
+          // 🌿 MID FLOAT
+          {
+            transform: `
+              translate(${driftMid}px,-${rise/2}px)
+              scale(${midScale})
+              rotate(${Math.random()*40-20}deg)
+            `,
+            opacity: 1
+          },
+
+          // 🍃 FINAL EXIT
+          {
+            transform: `
+              translate(${driftX}px,-${rise}px)
+              scale(0.8)
+              rotate(${Math.random()*120-60}deg)
+            `,
+            opacity: 0
+          }
+
+        ],{
+
+          duration: 2600 + Math.random() * 1200,
+
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+
+          fill: "forwards"
+        });
+
+      });
+
+      setTimeout(()=>{
+        el.remove();
+      },4000);
+
+    }, i * (50 + Math.random() * 40));
+
+  }
+}
+// ❤️ HEARTS (CONTROL PANEL + BACKUP)
+
+// 🔥 CHAT REACTIONS (THIS WAS MISSING)
+socket.on("reaction",(emoji)=>{
+  console.log("🔥 REACTION RECEIVED:", emoji);
+  spawnReaction(emoji || "❤️");
+});
+/* =========================
+   🎂 CINEMATIC BIRTHDAY MODE
+========================= */
+
+socket.on("birthday_wish", (data) => {
+console.log(
+  "🎂 OVERLAY PHOTO URL:",
+  data?.photo_url?.length
+);
+console.log("🎂 FULL BIRTHDAY DATA:", data);
+
+  if(!data) return;
+
+  const duration =
+  Number(data.duration) > 0
+    ? Number(data.duration)
+    : 8000;
+
+const layer = document.createElement("div");
+
+layer.className = "birthdayLayer";
+
+layer.style.position = "fixed";
+layer.style.inset = "0";
+layer.style.display = "flex";
+layer.style.flexDirection = "column";
+layer.style.justifyContent = "center";
+layer.style.alignItems = "center";
+layer.style.zIndex = "999999999";
+
+layer.style.fontFamily =
+  data.font || "sans-serif";
+
+layer.style.fontWeight = "bold";
+
+// 🎨 BACKGROUNDS
+const bgMap = {
+  gradient: "linear-gradient(135deg,#ff00cc,#333)",
+  dark: "#000",
+  gold: "linear-gradient(135deg,#FFD700,#b8860b)",
+  party: "radial-gradient(circle,#ff0080,#7928ca,#2af598)"
+};
+console.log("🎂 Birthday BG:", data.bg);
+layer.style.background =
+  bgMap[data.bg] || bgMap.gradient;
+
+  // 🎬 CONTENT
+  layer.innerHTML = `
+    <div style="
+  position:absolute;
+  top:20px;
+  right:20px;
+  font-size:30px;
+  cursor:pointer;
+  z-index:9999;
+"
+onclick="
+event.stopPropagation();
+clearInterval(this.parentElement.confettiInterval);
+clearInterval(this.parentElement.floatingInterval);
+this.parentElement.remove();
+">
+  ❌
+</div>
+
+    <div style="
+      font-size:70px;
+      font-weight:bold;
+      text-align:center;
+      text-shadow:0 0 20px rgba(0,0,0,.7);
+    ">
+      🎉 HAPPY BIRTHDAY 🎉
+    </div>
+
+    <div style="
+      font-size:60px;
+      margin-top:10px;
+      text-align:center;
+      text-shadow:0 0 20px rgba(0,0,0,.7);
+    ">
+      ${data.birthday_person || ""}
+    </div>
+
+    <div style="
+      font-size:28px;
+      margin-top:20px;
+      text-align:center;
+      max-width:90%;
+      text-shadow:0 0 20px rgba(0,0,0,.7);
+    ">
+      ${data.message || ""}
+    </div>
+
+    ${data.song_request
+      ? `<div style="
+          margin-top:15px;
+          font-size:24px;
+          text-align:center;
+        ">
+          🎵 ${data.song_request}
+        </div>`
+      : ""
+    }
+
+    ${data.photo_url
+      ? `<img
+  src="${data.photo_url}"
+  onclick="event.stopPropagation()"
+          style="
+            margin-top:25px;
+            max-width:95vw;
+            max-height:70vh;
+            width:auto;
+            height:auto;
+            object-fit:contain;
+            border-radius:20px;
+            box-shadow:0 0 30px rgba(0,0,0,.6);
+          "
+        >`
+      : ""
+    }
+  `;
+
+  document.body.appendChild(layer);
+
+// 🎉 ULTRA CONFETTI SYSTEM
+const confettiInterval = setInterval(()=>{
+
+  spawnReaction(
+    ["🎉","🎂","✨","🎈"]
+    [Math.floor(Math.random()*4)]
+  );
+
+},250);
+
+
+// 🎆 FLOATING TEXT EFFECT
+const floatingInterval = setInterval(()=>{
+
+  let txt = document.createElement("div");
+
+  txt.innerText =
+    ["🎉","🎈","✨","🎂"]
+    [Math.floor(Math.random()*4)];
+
+  txt.style.position = "fixed";
+  txt.style.left = Math.random()*100 + "%";
+  txt.style.bottom = "-50px";
+  txt.style.fontSize = "40px";
+  txt.style.zIndex = "999999999";
+
+  txt.animate([
+    {
+      transform:"translateY(0px)",
+      opacity:0
+    },
+    {
+      opacity:1
+    },
+    {
+      transform:"translateY(-100vh)",
+      opacity:0
+    }
+  ],{
+    duration:6000,
+    easing:"linear"
+  });
+
+  document.body.appendChild(txt);
+
+  setTimeout(()=>{
+    txt.remove();
+  },6000);
+
+},500);
+
+
+// ✅ STORE INTERVALS ON LAYER
+layer.confettiInterval = confettiInterval;
+layer.floatingInterval = floatingInterval;
+
+
+// ✅ TAP OVERLAY TO CLOSE
+layer.onclick = ()=>{
+
+  clearInterval(layer.confettiInterval);
+  clearInterval(layer.floatingInterval);
+
+  layer.remove();
+
+};
+
+
+// ✅ AUTO CLOSE
+setTimeout(()=>{
+
+  clearInterval(layer.confettiInterval);
+  clearInterval(layer.floatingInterval);
+
+  layer.remove();
+
+}, duration);
+
+}); // ✅ END birthday_wish HANDLER
+
+
+
+// 🎂 FORCE CLOSE FROM CONTROL PANEL
+socket.on("clear birthday",()=>{
+
+  document
+    .querySelectorAll(".birthdayLayer")
+    .forEach(layer=>{
+
+      clearInterval(layer.confettiInterval);
+      clearInterval(layer.floatingInterval);
+
+      layer.remove();
+
+    });
+
+});
+
+
+// ❤️ CONTROL PANEL HEART BURST
+socket.on("hearts", (count)=>{
+
+  console.log("❤️ HEART BURST:", count);
+
+  const total = Number(count) || 20;
+
+  for(let i = 0; i < total; i++){
+
+    setTimeout(()=>{
+
+      spawnReaction("❤️");
+
+    }, i * 60);
+
+  }
+
+});
+// ✅ CORRECT PLACE (OUTSIDE)
+socket.on("connect",()=>{
+  socket.emit("request settings");
+});
+
+const chat = document.getElementById("chat");
+const splash = document.getElementById("splash");
+
+setTimeout(()=>{ splash.style.display="none"; },2000);
+
+let settings = {
+  fontSize:18,
+  bubbleRadius:20,
+  width:35,
+  opacity:0.75,
+  imageSize:180,
+  overlayAvatarSize:40,
+  fontColor:"#ffffff"
+};
+
+const userColors = {};
+const colorClasses = [
+  "linear-gradient(135deg,#ff416c,#ff4b2b)",   // red
+  "linear-gradient(135deg,#ff9a00,#ff6a00)",   // orange
+  "linear-gradient(135deg,#f7971e,#ffd200)",   // yellow
+  "linear-gradient(135deg,#00c6ff,#0072ff)",   // blue
+  "linear-gradient(135deg,#00f260,#0575e6)",   // green-blue
+  "linear-gradient(135deg,#43e97b,#38f9d7)",   // green
+  "linear-gradient(135deg,#fa709a,#fee140)",   // pink-yellow
+  "linear-gradient(135deg,#30cfd0,#330867)"    // teal-purple
+];
+
+function formatMessage(msg){
+  if(!msg) return "";
+
+  const onlyEmoji = /^[\p{Emoji}\s]+$/u.test(msg.trim());
+
+  if(onlyEmoji){
+
+  const count =
+    [...msg.trim()].length;
+
+  // 🔥 SINGLE HUGE EMOJI
+  if(count === 1){
+
+    return `
+      <div class="bigEmoji">
+        ${msg}
+      </div>
+    `;
+  }
+
+  // 🔥 MULTIPLE EMOJIS
+  return `
+    <div class="multiEmoji">
+      ${msg}
+    </div>
+  `;
+}
+
+  return msg.replace(/\n/g,"<br>");
+}
+
+function applyStyles(el){
+  el.style.fontSize = (settings.overlayFontSize || settings.fontSize) + "px";
+  el.style.borderRadius = settings.bubbleRadius + "px";
+  // REMOVE opacity from bubbles on overlay
+el.style.opacity = 1;
+  el.style.color = settings.fontColor || "#ffffff";
+}
+
+function addMessage(d){
+
+  if(!d || !d.name) return;
+
+  function hashCode(str){
+    let hash = 0;
+
+    for(let i=0;i<str.length;i++){
+      hash = str.charCodeAt(i) + ((hash<<5)-hash);
+    }
+
+    return hash;
+  }
+
+  if(!userColors[d.name]){
+    const index =
+      Math.abs(hashCode(d.name))
+      % colorClasses.length;
+
+    userColors[d.name] =
+      colorClasses[index];
+  }
+
+  const wrap = document.createElement("div");
+  wrap.className = "msgWrap";
+
+  const bubble = document.createElement("div");
+  bubble.className = "message";
+
+  bubble.style.background =
+    d.color || userColors[d.name];
+
+  applyStyles(bubble);
+
+  bubble.innerHTML =
+    `<strong>${d.name}</strong><br>` +
+    formatMessage(d.message) +
+    (d.image
+      ? `<img src="${d.image}" class="msgImg">`
+      : "");
+
+  wrap.appendChild(bubble);
+
+chat.appendChild(wrap);
+
+/* 🔥 FORCE OVERLAY TO UPDATE SIZE */
+requestAnimationFrame(()=>{
+
+  bubble.style.height = "auto";
+
+  /* 🔥 AUTO SCROLL TO BOTTOM */
+  chat.scrollTop =
+    chat.scrollHeight;
+
+});
+
+/* 🔥 LIMIT MESSAGE COUNT */
+if(chat.children.length > 100){
+
+  chat.removeChild(chat.firstChild);
+
+  /* 🔥 KEEP SCROLL CORRECT */
+  requestAnimationFrame(()=>{
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  });
+
+}
+
+}
+// RECEIVE NEW CHAT MESSAGES
+socket.on("chat message", addMessage);
+
+// LOAD CHAT HISTORY
+socket.on("message history", msgs=>{
+
+  msgs.forEach(addMessage);
+
+  // 🔥 FORCE SCROLL AFTER HISTORY LOAD
+  setTimeout(()=>{
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  },100);
+
+});// CLEAR CHAT
+socket.on("clear chat",()=>{
+
+  chat.innerHTML = "";
+
+  chat.scrollTop = 0;
+
+  while(chat.firstChild){
+    chat.removeChild(chat.firstChild);
+  }
+
+});
+
+/* 🔥 SPOTLIGHT SYSTEM */
+
+let spotlightBox = document.createElement("div");
+
+spotlightBox.style.position = "fixed";
+spotlightBox.style.top = "50px";
+spotlightBox.style.left = "50px";
+
+spotlightBox.style.padding = "12px 22px";
+spotlightBox.style.borderRadius = "14px";
+
+spotlightBox.style.background = "rgba(0,0,0,0.6)";
+spotlightBox.style.backdropFilter = "blur(10px)";
+
+spotlightBox.style.color = "#fff";
+spotlightBox.style.fontWeight = "bold";
+
+spotlightBox.style.fontSize =
+  window.innerWidth < 700 ? "24px" : "40px";
+
+spotlightBox.style.maxWidth = "90vw";
+spotlightBox.style.wordBreak = "break-word";
+
+spotlightBox.style.boxShadow =
+  "0 0 20px rgba(0,0,0,0.6)";
+
+spotlightBox.style.textShadow =
+  "0 0 10px #000";
+
+spotlightBox.style.display = "none";
+
+spotlightBox.style.zIndex = "99999999";
+
+document.body.appendChild(spotlightBox);
+
+socket.on("spotlight update",(name)=>{
+
+  console.log("🎤 SPOTLIGHT UPDATE:", name);
+spotlightBox.style.zIndex = "999999999";
+
+  if(settings.spotlightEnabled === false){
+    spotlightBox.style.display = "none";
+    return;
+  }
+
+  if(!name || !name.trim()){
+    spotlightBox.style.display = "none";
+    return;
+  }
+
+  spotlightBox.innerText = "🎤 " + name;
+
+  spotlightBox.style.visibility = "visible";
+  spotlightBox.style.opacity = "1";
+  spotlightBox.style.display = "block";
+});
+
+let spotlightTimer = null;
+
+socket.on("spotlight timed",(data)=>{
+
+  if(!data || !data.name) return;
+
+  spotlightBox.innerText =
+    "🎤 " + data.name;
+
+  spotlightBox.style.display = "block";
+
+  spotlightBox.style.opacity = "1";
+
+  spotlightBox.style.visibility = "visible";
+
+  if(spotlightTimer){
+    clearTimeout(spotlightTimer);
+  }
+
+  spotlightTimer = setTimeout(()=>{
+
+    spotlightBox.style.display = "none";
+
+  }, (Number(data.time) || 10) * 1000);
+
+});
+
+socket.on("clear spotlight",()=>{
+
+  spotlightBox.style.display = "none";
+
+});
+
+/* 🔥 PIN MESSAGE SYSTEM */
+
+let pinBox = document.createElement("div");
+
+pinBox.style.position = "fixed";
+
+pinBox.style.top = "120px";
+pinBox.style.left = "50px";
+
+pinBox.style.padding = "10px 18px";
+
+pinBox.style.borderRadius = "12px";
+
+pinBox.style.background = "rgba(0,0,0,0.6)";
+pinBox.style.backdropFilter = "blur(10px)";
+
+pinBox.style.color = "#fff";
+
+pinBox.style.fontWeight = "bold";
+
+pinBox.style.fontSize =
+  window.innerWidth < 700 ? "18px" : "28px";
+
+pinBox.style.maxWidth = "90vw";
+
+pinBox.style.wordBreak = "break-word";
+
+pinBox.style.boxShadow =
+  "0 0 20px rgba(0,0,0,0.6)";
+
+pinBox.style.textShadow =
+  "0 0 10px #000";
+
+pinBox.style.display = "none";
+
+pinBox.style.zIndex = "99999999";
+
+document.body.appendChild(pinBox);
+
+socket.on("pin update",(msg)=>{
+
+  console.log("📌 PIN UPDATE:", msg);
+pinBox.style.zIndex = "999999999";
+
+  if(settings.pinEnabled === false){
+
+    pinBox.style.display = "none";
+
+    return;
+  }
+
+  if(!msg || !msg.trim()){
+
+    pinBox.style.display = "none";
+
+    return;
+  }
+
+  pinBox.innerText = "📌 " + msg;
+
+  pinBox.style.visibility = "visible";
+
+  pinBox.style.opacity = "1";
+
+  pinBox.style.display = "block";
+
+});
+
+socket.on("clear pin",()=>{
+
+  pinBox.style.display = "none";
+
+});
+/* 🔥 POSITION CONTROL FIX */
+socket.on("overlay layout",(layout)=>{
+// 🔥 FORCE REFLOW (CRITICAL FOR OBS)
+spotlightBox.style.transition = "none";
+pinBox.style.transition = "none";
+  if(!layout) return;
+// 🔥 FORCE RENDER UPDATE
+spotlightBox.offsetHeight;
+pinBox.offsetHeight;
+
+  if(layout.spotlightX !== undefined) spotlightBox.style.left = layout.spotlightX + "px";
+if(layout.spotlightY !== undefined) spotlightBox.style.top = layout.spotlightY + "px";
+
+if(layout.pinX !== undefined) pinBox.style.left = layout.pinX + "px";
+if(layout.pinY !== undefined) pinBox.style.top = layout.pinY + "px";
+// ❤️ REACTION POSITION
+if(layout.reactionX !== undefined)
+  settings.reactionX = layout.reactionX;
+
+if(layout.reactionY !== undefined)
+  settings.reactionY = layout.reactionY;
+});
+socket.on("settings update", s => {
+
+  settings = { ...settings, ...s };
+document.body.style.fontFamily =
+  s.overlayFontFamily ||
+  "Arial, sans-serif";
+  chat.style.width =
+    (s.overlayWidth || 35) + "%";
+
+  chat.style.maxWidth =
+    (s.overlayWidth || 35) + "%";
+
+  pinBox.style.color =
+    s.pinColor || "#ffffff";
+
+  spotlightBox.style.color =
+    s.spotlightColor || "#ffffff";
+
+  const pinOpacity =
+    Number(s.pinBgOpacity ?? 0.5);
+
+  const spotOpacity =
+    Number(s.spotlightBgOpacity ?? 0.5);
+
+  /* 📌 PIN BACKGROUND + OPACITY */
+  if(s.pinBg){
+
+    const r = parseInt(s.pinBg.slice(1,3),16);
+    const g = parseInt(s.pinBg.slice(3,5),16);
+    const b = parseInt(s.pinBg.slice(5,7),16);
+
+    pinBox.style.background =
+      `rgba(${r},${g},${b},${pinOpacity})`;
+  }
+
+  /* 🎤 SPOTLIGHT BACKGROUND + OPACITY */
+  if(s.spotlightBg){
+
+    const r = parseInt(s.spotlightBg.slice(1,3),16);
+    const g = parseInt(s.spotlightBg.slice(3,5),16);
+    const b = parseInt(s.spotlightBg.slice(5,7),16);
+
+    spotlightBox.style.background =
+      `rgba(${r},${g},${b},${spotOpacity})`;
+  }
+
+  
+  /* OVERLAY OPACITY */
+document.body.style.opacity = 1;
+
+  /* ENABLE / DISABLE */
+
+settings.spotlightEnabled =
+  s.spotlightEnabled !== false;
+
+settings.pinEnabled =
+  s.pinEnabled !== false;
+
+if(!settings.spotlightEnabled){
+  spotlightBox.style.display = "none";
+}
+
+if(!settings.pinEnabled){
+  pinBox.style.display = "none";
+}
+
+  /* UPDATE EXISTING CHAT BUBBLES */
+  document.querySelectorAll(".message").forEach(el => {
+
+    applyStyles(el);
+
+    el.style.fontSize =
+      (s.overlayFontSize || s.fontSize) + "px";
+
+    const img = el.querySelector("img");
+
+    if(img){
+      img.style.maxWidth =
+        (settings.overlayImageSize || settings.imageSize)
+        + "px";
+    }
+
+  });
+
+});
+function resizeOverlayUI(){
+
+  if(window.innerWidth < 700){
+
+    spotlightBox.style.fontSize = "24px";
+    pinBox.style.fontSize = "18px";
+
+    spotlightBox.style.left = "10px";
+    pinBox.style.left = "10px";
+
+    spotlightBox.style.maxWidth = "95vw";
+    pinBox.style.maxWidth = "95vw";
+
+  }else{
+
+    spotlightBox.style.fontSize = "40px";
+    pinBox.style.fontSize = "28px";
+
+    spotlightBox.style.left = "50px";
+    pinBox.style.left = "50px";
+
+  }
+
+}
+
+window.addEventListener(
+  "resize",
+  resizeOverlayUI
+);
+
+resizeOverlayUI();
+</script>
+<div id="overlayImgViewer" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:99999;
+">  <img
+id="overlayImgViewerImg"
+style="
+max-width:95%;
+max-height:95%;
+border-radius:12px;
+"
+>
+</div>
+
+</body>
+</html>

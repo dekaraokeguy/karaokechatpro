@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>🎛 Pro Karaoke Studio Control Panel</title>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+}
+
+/* HEADER */
+.title{
+  text-align:center;
+  padding:15px;
+  font-size:22px;
+  color:#00cfff;
+  font-weight:bold;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:15px;
+  padding:15px;
+}
+
+/* PANEL */
+.panel{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(0,200,255,0.2);
+  border-radius:14px;
+  padding:12px;
+  backdrop-filter:blur(10px);
+}
+
+.panel h3{
+  margin:0;
+  color:#00cfff;
+}
+
+/* ✅ STRONGER HIDE SYSTEM */
+.hide-panels .panel,
+.hide-panels .section{
+  display:none !important;
+}
+
+/* 🔥 COLLAPSIBLE HEADER */
+.collapsibleHeader{
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+  padding:4px 0;
+}
+/* 🔥 HIDE CONTENT */
+.collapsibleContent{
+  overflow:hidden;
+  max-height:0;
+  opacity:0;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    margin-top 0.25s ease;
+}
+
+/* 🔥 OPEN STATE */
+.collapsibleContent.open{
+  max-height:2000px;
+  opacity:1;
+  margin-top:12px;
+}
+
+/* 🔥 ARROW */
+.arrow{
+  transition:transform 0.3s ease;
+  font-size:14px;
+}
+
+.arrow.open{
+  transform:rotate(180deg);
+}
+
+/* BUTTONS */
+button{
+  width:100%;
+  margin:6px 0;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:#8a2be2;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:active{transform:scale(0.95);}
+button.active{background:#00cfff;box-shadow:0 0 10px #00cfff;}
+
+/* INPUTS */
+input{
+  width:100%;
+  margin:6px 0;
+  padding:8px;
+  border-radius:8px;
+  border:none;
+  background:#111;
+  color:white;
+}
+
+/* MOBILE BUTTON */
+#mobileBtn{
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  background:#00cfff;
+  color:black;
+  padding:12px;
+  border-radius:50%;
+  font-size:18px;
+  cursor:pointer;
+  z-index:9999;
+}
+
+/* MOBILE PANEL */
+#mobilePanel{
+  position:fixed;
+  bottom:70px;
+  right:10px;
+  width:260px;
+  background:#111;
+  border:1px solid #00cfff;
+  border-radius:12px;
+  padding:10px;
+  display:none;
+  z-index:9999;
+}
+</style>
+</head>
+
+<body>
+
+<body>
+
+<div id="loginScreen">
+
+  <h2>
+    🔒 Karaoke Live Admin
+  </h2>
+
+  <input
+    id="adminPassword"
+    type="password"
+    placeholder="Enter Password"
+  >
+
+  <button onclick="unlockControlPanel()">
+    Login
+  </button>
+
+</div>
+
+<div
+  id="controlPanel"
+  style="display:none;"
+>
+
+<div class="title">
+  🎛 PRO KARAOKE STUDIO CONTROL PANEL
+</div>
+
+<div class="grid">
+
+<!-- ❤️ REACTIONS -->
+<div class="panel">
+<h3>❤️ Reactions</h3>
+<button onclick="sendHearts()">🔥 Burst Hearts</button>
+<input type="range" id="heartIntensity" min="1" max="100" value="30">
+</div>
+
+<!-- 💬 CHAT -->
+<div class="panel">
+<h3>💬 Chat</h3>
+<button onclick="clearChat()">🧹 Clear Chat</button>
+</div>
+<!-- 🎂 ULTRA BIRTHDAY MODE -->
+<div class="panel">
+<h3>🎂 Birthday Mode (PRO)</h3>
+
+<input id="bdayName" placeholder="Birthday Person Name">
+<input id="bdayMsg" placeholder="Message">
+<input id="bdaySong" placeholder="Song Request (optional)">
+<input id="bdayPhoto" placeholder="Image URL (or selfie upload below)">
+
+<input type="file" id="bdayUpload" accept="image/*">
+
+<br><br>
+
+
+<label>🎨 Background:</label>
+<select id="bdayBg">
+  <option value="gradient">Gradient</option>
+  <option value="dark">Dark</option>
+  <option value="gold">Gold</option>
+  <option value="party">Party</option>
+</select>
+
+<br><br>
+
+<label>🔤 Font Style:</label>
+<select id="bdayFont">
+  <option value="sans-serif">Default</option>
+  <option value="cursive">Cursive</option>
+  <option value="monospace">Mono</option>
+  <option value="fantasy">Fantasy</option>
+</select>
+
+<br><br>
+
+<button onclick="sendBirthday()">🎬 LAUNCH BIRTHDAY</button>
+<button onclick="enableBirthday()">✅ Enable Mode</button>
+<button onclick="disableBirthday()">
+❌ Disable
+</button>
+<label>
+🎂 Birthday Duration (seconds)
+</label>
+
+<input
+  id="birthdayDurationControl"
+  type="number"
+  value="15"
+  min="5"
+  max="120"
+>
+
+<button onclick="saveBirthdayDuration()">
+💾 Save Duration
+</button>
+
+<br><br>
+<button onclick="clearBirthday()">
+🛑 Force Close Birthday
+</button>
+
+<button onclick="resetBirthday()">
+♻ Reset Birthday Form
+</button></div><!-- 🎤 SPOTLIGHT -->
+<div class="panel">
+<h3>🎤 Spotlight</h3>
+<input id="singerName" placeholder="Singer Name">
+<button onclick="spotlightSinger()">Show Spotlight</button>
+<button onclick="enableSpotlight()">
+✅ Enable Spotlight
+</button>
+
+<button onclick="disableSpotlight()">
+❌ Disable Spotlight
+</button>
+<input id="spotTime" type="number" value="15">
+<button onclick="spotlightTimed()">Timed Spotlight</button>
+<button onclick="clearSpotlight()">Clear</button>
+</div>
+
+<!-- 📌 PIN -->
+<div class="panel">
+<h3>📌 Pin</h3>
+<input id="pinText" placeholder="Pinned Message">
+<button onclick="pinMessage()">Pin</button>
+
+<button onclick="enablePin()">
+✅ Enable Pin
+</button>
+
+<button onclick="disablePin()">
+❌ Disable Pin
+</button>
+
+<button onclick="clearPin()">Clear</button>
+</div>
+
+<!-- 📐 POSITION -->
+<div class="panel">
+<h3>📐 Overlay Position</h3>
+
+<label>Spot X</label>
+<input type="range" id="spotX" min="0" max="1500">
+
+<label>Spot Y</label>
+<input type="range" id="spotY" min="0" max="900">
+
+<label>Pin X</label>
+<input type="range" id="pinX" min="0" max="1500">
+
+<label>Pin Y</label>
+<input type="range" id="pinY" min="0" max="900">
+<label>Reaction X</label>
+<input type="range" id="reactionX" min="0" max="1920">
+
+<label>Reaction Y</label>
+<input type="range" id="reactionY" min="0" max="1080">
+</div>
+
+<!-- 🎥 PERFORMANCE -->
+<div class="panel">
+<h3>🎥 Performance</h3>
+
+<button onclick="toggleDownload(this,true)">Enable Download</button>
+<button onclick="toggleDownload(this,false)">Disable Download</button>
+
+<button onclick="toggleBrowse(this,true)">Enable Browse</button>
+<button onclick="toggleBrowse(this,false)">Disable Browse</button>
+
+<button onclick="toggleRecording(this,true)">Enable Recording</button>
+<button onclick="toggleRecording(this,false)">Disable Recording</button>
+</div>
+<!-- 🏆 VOTING -->
+<div class="panel">
+
+<h3>🏆 Voting</h3>
+
+<input
+  id="contestantName"
+  placeholder="Contestant Name"
+>
+
+<button onclick="addContestant()">
+➕ Add Contestant
+</button>
+
+<button onclick="startPeopleVoting()">
+🟢 Start People's Choice
+</button>
+
+<button onclick="stopVoting()">
+🔴 Stop Voting
+</button>
+
+<button onclick="revealScores()">
+🏆 Reveal Scores
+</button>
+
+<button onclick="resetVoting()">
+♻ Reset Scores
+</button>
+
+<button onclick="newRound()">
+🗑 New Round
+</button>
+<button onclick="startGrandFinal()">
+🏆 Start Grand Final
+</button>
+</div>
+<!-- 🏆 ROUND HISTORY -->
+
+<div class="panel">
+
+<h3>🏆 Round Winners</h3>
+
+<div id="roundWinnerList">
+
+No rounds completed yet.
+
+</div>
+
+<hr>
+
+<h3>👑 Grand Finalists</h3>
+
+<div id="grandFinalList">
+
+No finalists yet.
+
+</div>
+
+</div>
+<!-- 🎨 STYLE ENGINE COLLAPSIBLE -->
+<div class="panel">
+
+  <!-- HEADER -->
+  <div class="collapsibleHeader" onclick="toggleStyleEngine()">
+    <h3>🎨 Style Engine</h3>
+    <span id="styleArrow" class="arrow">▼</span>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="styleContent" class="collapsibleContent">
+
+    <label>Pin Background</label>
+    <input type="color" id="pinBg">
+
+    <label>Spot Background</label>
+    <input type="color" id="spotlightBg">
+
+    <label>Pin Opacity</label>
+    <input type="range" id="pinBgOpacity" min="0" max="1" step="0.05">
+
+    <label>Spot Opacity</label>
+    <input type="range" id="spotlightBgOpacity" min="0" max="1" step="0.05">
+
+    <label>Pin Color</label>
+    <input type="color" id="pinColor">
+
+    <label>Spot Color</label>
+    <input type="color" id="spotlightColor">
+
+    <label>Overlay Opacity</label>
+    <input type="range" id="overlayOpacity" min="0.2" max="1" step="0.05">
+
+    <label>Font Color</label>
+    <input type="color" id="fontColor">
+
+    <label>Overlay Font</label>
+    <input type="range" id="overlayFontSize" min="14" max="50">
+
+    <label>Chat Font</label>
+    <input type="range" id="chatFontSize" min="14" max="50">
+<label>Chat Font Family</label>
+
+<select id="chatFontFamily">
+  <option value="system-ui">System UI</option>
+  <option value="Arial, sans-serif">Arial</option>
+  <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+  <option value="'Comic Sans MS', cursive">Comic Sans</option>
+  <option value="'Courier New', monospace">Courier</option>
+  <option value="Georgia, serif">Georgia</option>
+  <option value="'Times New Roman', serif">Times New Roman</option>
+</select>
+<label>Overlay Font Family</label>
+
+<select id="overlayFontFamily">
+  <option value="Arial, sans-serif">Arial</option>
+  <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+  <option value="'Comic Sans MS', cursive">Comic Sans</option>
+  <option value="'Courier New', monospace">Courier</option>
+  <option value="Georgia, serif">Georgia</option>
+  <option value="'Times New Roman', serif">Times New Roman</option>
+</select>
+    <label>Bubble Radius</label>
+    <input type="range" id="bubbleRadius" min="5" max="60">
+
+    <label>Chat Width</label>
+    <input type="range" id="chatWidth" min="20" max="100">
+
+    <label>Overlay Width</label>
+    <input type="range" id="overlayWidth" min="20" max="100">
+
+    <label>Chat Opacity</label>
+    <input type="range" id="opacity" min="0.3" max="1" step="0.05">
+
+    <label>Overlay Image</label>
+    <input type="range" id="overlayImageSize" min="80" max="400">
+
+    <label>Chat Image</label>
+    <input type="range" id="chatImageSize" min="80" max="400">
+
+    <button onclick="sendSettings()">🚀 Apply</button>
+    <button onclick="resetSettings()">♻ Reset</button>
+
+  </div>
+
+</div>
+
+</div>
+
+<!-- MOBILE CONTROL -->
+<div id="mobileBtn" onclick="toggleMobile()">📱</div>
+
+<div id="mobilePanel">
+<h3>📱 Mobile Controls</h3>
+
+<button onclick="sendHearts()">❤️ Hearts</button>
+<button onclick="clearChat()">🧹 Chat</button>
+<button onclick="spotlightSinger()">🎤 Spotlight</button>
+<button onclick="pinMessage()">📌 Pin</button>
+<button onclick="sendSettings()">🎨 Apply</button>
+
+</div>
+</div>
+<script>
+
+async function unlockControlPanel(){
+
+  const pass =
+    document.getElementById(
+      "adminPassword"
+    ).value;
+
+  try {
+
+    const response =
+      await fetch(
+        "/admin-login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            password: pass
+          })
+        }
+      );
+
+    if(!response.ok){
+
+      alert(
+        "Incorrect Password"
+      );
+
+      return;
+    }
+
+    document.getElementById(
+      "loginScreen"
+    ).style.display = "none";
+
+    document.getElementById(
+      "controlPanel"
+    ).style.display = "block";
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    alert(
+      "Login Failed"
+    );
+
+  }
+
+}
+const socket = io();
+socket.on("request settings",()=>{
+
+  sendSettings();
+
+});
+socket.on(
+  "round winners update",
+  updateRoundWinners
+);
+
+socket.on(
+  "grand finalists update",
+  updateGrandFinalists
+);
+
+function updateRoundWinners(list){
+
+  const box =
+    document.getElementById(
+      "roundWinnerList"
+    );
+
+  if(!box) return;
+
+  if(!list.length){
+
+    box.innerHTML =
+      "No rounds completed yet.";
+
+    return;
+
+  }
+
+  box.innerHTML =
+    list.map(r=>`
+
+<div>
+
+<b>Round ${r.round}</b><br>
+
+⭐ ${r.name}<br>
+
+${r.score} points
+
+</div>
+
+<hr>
+
+`).join("");
+
+}
+
+function updateGrandFinalists(list){
+
+  const box =
+    document.getElementById(
+      "grandFinalList"
+    );
+
+  if(!box) return;
+
+  if(!list.length){
+
+    box.innerHTML =
+      "No finalists yet.";
+
+    return;
+
+  }
+
+  box.innerHTML =
+    list.map(name=>
+
+`🏆 ${name}`
+
+    ).join("<br>");
+
+}
+/* =========================
+SAVE / LOAD SYSTEM
+========================= */
+
+function saveSettings(){
+  const data = {};
+  document.querySelectorAll("input,select").forEach(i=>{
+    data[i.id] = i.value;
+  });
+  localStorage.setItem("karaoke_settings", JSON.stringify(data));
+}
+
+function loadSettings(){
+  const data = JSON.parse(localStorage.getItem("karaoke_settings") || "{}");
+
+  Object.keys(data).forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.value = data[id];
+  });
+}
+
+/* AUTO SAVE */
+document.querySelectorAll("input").forEach(i=>{
+
+  i.addEventListener("input", ()=>{
+
+    saveSettings();
+
+    sendSettings();
+
+  });
+
+});
+
+/* 🔥 LIVE POSITION SLIDERS */
+
+["spotX","spotY","pinX","pinY","reactionX","reactionY"].forEach(id=>{
+
+  const el = document.getElementById(id);
+
+  if(!el) return;
+
+  el.addEventListener("input",sendLayout);
+
+});
+
+/* LOAD ON START */
+window.onload = ()=>{
+
+  loadSettings();
+
+  sendSettings();
+
+};
+
+/* =========================
+SOCKET ACTIONS
+========================= */
+
+function sendHearts(){
+  socket.emit("hearts", document.getElementById("heartIntensity").value);
+}
+
+function clearChat(){socket.emit("clear chat");}
+function spotlightSinger(){socket.emit("spotlight singer", singerName.value);}
+function spotlightTimed(){
+  socket.emit("spotlight timed",{
+    name:singerName.value,
+    time:Number(spotTime.value)
+  });
+}
+function clearSpotlight(){
+  socket.emit("clear spotlight");
+}
+
+function pinMessage(){
+  socket.emit("pin message", pinText.value);
+}
+
+function clearPin(){
+  socket.emit("clear pin");
+}
+
+function enableSpotlight(){
+  socket.emit("settings update",{
+    spotlightEnabled:true
+  });
+}
+
+function disableSpotlight(){
+  socket.emit("settings update",{
+    spotlightEnabled:false
+  });
+}
+
+function enablePin(){
+  socket.emit("settings update",{
+    pinEnabled:true
+  });
+}
+
+function disablePin(){
+  socket.emit("settings update",{
+    pinEnabled:false
+  });
+}
+/* PERFORMANCE */
+function toggleDownload(b,s){socket.emit("performance access update",{allowDownload:s});}
+function toggleBrowse(b,s){socket.emit("performance access update",{allowBrowse:s});}
+function toggleRecording(b,s){socket.emit("performance access update",{allowRecording:s});}
+/* =========================
+   VOTING SYSTEM
+========================= */
+
+function addContestant(){
+
+  const input =
+    document.getElementById("contestantName");
+
+  if(!input) return;
+
+  const name = input.value.trim();
+
+  if(!name){
+    alert("Enter contestant name");
+    return;
+  }
+
+  socket.emit("add contestant", name);
+
+  input.value = "";
+}
+
+function startPeopleVoting(){
+
+  socket.emit("start voting", {
+    mode: "people"
+  });
+
+  alert("People voting started");
+}
+
+function stopVoting(){
+
+  socket.emit("stop voting");
+
+  alert("Voting stopped");
+}
+
+function revealScores(){
+
+  socket.emit("reveal scores");
+
+  alert("Scores revealed");
+}
+
+function resetVoting(){
+
+  socket.emit("reset voting");
+
+  alert("Voting reset");
+}
+function newRound(){
+
+  if(
+    !confirm(
+      "Start a completely new round?\n\nThis will remove every contestant."
+    )
+  ){
+    return;
+  }
+
+  socket.emit("new round");
+
+  alert("New round started");
+}
+function startGrandFinal(){
+
+  if(
+    !confirm(
+      "Replace contestants with Grand Finalists?"
+    )
+  ){
+    return;
+  }
+
+  socket.emit(
+    "start grand final"
+  );
+
+  alert("🏆 Grand Final Started");
+
+}/* =========================
+SETTINGS SYNC (FULL FIX)
+========================= */
+const chatFontFamily =
+document.getElementById(
+  "chatFontFamily"
+);
+function hex(id){return document.getElementById(id).value;}
+let settingsTimeout;
+
+function sendSettings(){
+
+  clearTimeout(settingsTimeout);
+
+  settingsTimeout = setTimeout(()=>{
+
+    socket.emit("settings update",{
+
+      fontColor: hex("fontColor"),
+
+      pinBg: hex("pinBg"),
+      spotlightBg: hex("spotlightBg"),
+
+      pinBgOpacity: pinBgOpacity.value,
+      spotlightBgOpacity: spotlightBgOpacity.value,
+
+      pinColor: pinColor.value,
+      spotlightColor: spotlightColor.value,
+
+      overlayOpacity: overlayOpacity.value,
+
+      overlayFontSize: overlayFontSize.value,
+      chatFontSize: chatFontSize.value,
+
+      bubbleRadius: bubbleRadius.value,
+chatFontFamily:
+chatFontFamily
+  ? chatFontFamily.value
+  : "system-ui",
+overlayFontFamily:
+document.getElementById(
+  "overlayFontFamily"
+)?.value || "Arial, sans-serif",
+      chatWidth: chatWidth.value,
+      overlayWidth: overlayWidth.value,
+
+      opacity: opacity.value,
+
+      overlayImageSize: overlayImageSize.value,
+      chatImageSize: chatImageSize.value
+
+    });
+
+  },300);
+
+}
+
+/* 🔥 OVERLAY POSITION CONTROLS */
+function sendLayout(){
+
+  socket.emit("overlay layout",{
+
+    spotlightX:Number(
+      document.getElementById("spotX").value
+    ),
+
+    spotlightY:Number(
+      document.getElementById("spotY").value
+    ),
+
+    pinX:Number(
+      document.getElementById("pinX").value
+    ),
+
+    pinY:Number(
+      document.getElementById("pinY").value
+    ),
+
+    reactionX:Number(
+      document.getElementById("reactionX").value
+    ),
+
+    reactionY:Number(
+      document.getElementById("reactionY").value
+    )
+
+  });
+
+}
+
+/* RESET */
+function resetSettings(){
+  localStorage.removeItem("karaoke_settings");
+  location.reload();
+}
+/* =========================
+🎨 COLLAPSIBLE STYLE ENGINE
+========================= */
+
+function toggleStyleEngine(){
+
+  const content = document.getElementById("styleContent");
+  const arrow = document.getElementById("styleArrow");
+
+  content.classList.toggle("open");
+  arrow.classList.toggle("open");
+}
+/* MOBILE */
+function enableBirthday(){
+  socket.emit("birthday mode update", {
+    enabled: true,
+    cinematic: true
+  });
+}
+
+async function sendBirthday(){
+
+  let fileInput = document.getElementById("bdayUpload");
+  let photoUrl = document.getElementById("bdayPhoto").value;
+
+  if(fileInput.files[0]){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      emitBirthday(e.target.result);
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    emitBirthday(photoUrl);
+  }
+
+  function emitBirthday(photo){
+    socket.emit("birthday_wish", {
+      birthday_person: document.getElementById("bdayName").value,
+      message: document.getElementById("bdayMsg").value,
+      song_request: document.getElementById("bdaySong").value,
+      photo_url: photo,
+            bg: document.getElementById("bdayBg").value,
+      font: document.getElementById("bdayFont").value
+    });
+  }
+}
+
+function disableBirthday(){
+  socket.emit("birthday mode update", {
+    enabled: false
+  });
+}
+function saveBirthdayDuration(){
+
+  const seconds =
+    Number(
+      document.getElementById(
+        "birthdayDurationControl"
+      ).value
+    ) || 15;
+
+  socket.emit(
+    "birthday duration update",
+    seconds * 1000
+  );
+
+}
+function clearBirthday(){
+
+  socket.emit("clear birthday");
+
+}
+function resetBirthday(){
+
+  document.getElementById("bdayName").value = "";
+  document.getElementById("bdayMsg").value = "";
+  document.getElementById("bdaySong").value = "";
+  document.getElementById("bdayPhoto").value = "";
+  document.getElementById("bdayUpload").value = "";
+
+    document.getElementById("bdayBg").value = "gradient";
+  document.getElementById("bdayFont").value = "sans-serif";
+}
+function toggleMobile(){
+  const m = document.getElementById("mobilePanel");
+  m.style.display = m.style.display==="block"?"none":"block";
+}
+function closePanels(){
+  document.body.classList.toggle("hide-panels");
+}
+</script>
+
+</body>
+</html>

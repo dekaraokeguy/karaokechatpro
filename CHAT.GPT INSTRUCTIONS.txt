@@ -1,0 +1,359 @@
+Treat your current file as the source of truth.
+✅ Never assume missing sections.
+✅ Only show the small block being changed.
+✅ Show enough surrounding lines so you can verify the location without implying unrelated code should be removed.
+✅ If I'm not 100% certain where something belongs, I'll ask to see that section before giving replacement instructions.
+
+We'll continue exactly in the format you requested:
+
+📁 FILE
+⚠️ WHAT WE ARE FIXING
+🔍 FIND THIS EXACT BLOCK
+➕ DIRECTLY UNDER IT — PASTE THIS (or REPLACE IT WITH)
+✅ YOUR FILE SHOULD NOW LOOK LIKE THIS (including your existing surrounding code)
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+FOLLOW MY INSTRUCTIONS WHILE GUIDING ME
+FIND THIS EXACT BLOCK IN YOUR ---- :
+
+[existing code]
+
+DIRECTLY UNDER IT — PASTE THIS:
+
+[new code]
+
+YOUR ------ SHOULD NOW LOOK LIKE THIS:
+
+[complete finished section]
+always show what the warning is aboUt e'g. chat.html server etc.
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+APP DEVELOPMENT RULES
+
+Treat me as a beginner.
+
+NEVER assume I know where code goes.
+
+ALWAYS tell me the EXACT FILE.
+
+Example:
+
+chat.html
+chat-core.js
+server.js
+overlay.html
+control-panel.html
+
+ALWAYS use this format:
+
+EDIT YOUR:
+chat.html
+
+FIND THIS EXACT BLOCK:
+
+[paste exact code I should find]
+
+DIRECTLY UNDER IT — PASTE THIS:
+
+[new code]
+
+OR
+
+DIRECTLY ABOVE IT — PASTE THIS:
+
+[new code]
+
+OR
+
+REPLACE IT WITH:
+
+[new code]
+
+AFTER CHANGING, YOUR CODE SHOULD LOOK EXACTLY LIKE THIS:
+
+[full final code section]
+
+IF YOU SEE THIS ANYWHERE — DELETE IT:
+
+[exact code to remove]
+
+SHOW ME THE EXACT CODE TO DELETE.
+
+DO NOT SAY:
+
+Add this somewhere
+Put this in CSS
+Add this to JavaScript
+Insert this in HTML
+
+Instead show:
+
+Exact file
+Exact location
+Exact code to find
+Exact code to add
+Exact code to remove
+Exact final result
+
+WHEN WORKING IN JAVASCRIPT:
+
+SHOW WHICH SCRIPT IT BELONGS TO.
+
+Example:
+
+EDIT YOUR:
+server.js
+
+FIND THIS FUNCTION:
+
+function startServer(){
+
+ADD THIS DIRECTLY BELOW:
+
+[new code]
+
+OR
+
+ADD THIS DIRECTLY ABOVE:
+
+[new code]
+
+WHEN FIXING ERRORS:
+
+SHOW:
+
+STEP 1
+Open file.
+
+STEP 2
+Find exact code.
+
+STEP 3
+Delete exact code.
+
+STEP 4
+Paste new code.
+
+STEP 5
+Save file.
+
+STEP 6
+Restart server if required.
+
+ALWAYS END WITH:
+
+FINAL LOOK:
+
+Describe exactly what I should see on:
+
+Mobile
+Desktop
+Chat
+Overlay
+Voting
+Camera
+Buttons
+Reactions
+
+SO I KNOW THE CHANGE WORKED.
+
+NEVER MAKE ME GUESS.
+
+ALWAYS SHOW:
+
+FILE NAME
+FIND THIS
+DELETE THIS
+ADD ABOVE THIS
+ADD BELOW THIS
+REPLACE WITH THIS
+FINAL LOOK
+
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+PP DEVELOPMENT INSTRUCTIONS FOR CHATGPT
+
+When working on my app, treat me as a beginner.
+
+DO NOT assume I know where code goes.
+
+DO NOT say things like:
+
+"Add this to your CSS"
+"Put this in your JavaScript"
+"Insert this in your HTML"
+
+WITHOUT telling me EXACTLY where.
+
+ALWAYS use this format:
+
+FILE NAME
+Example:
+chat.html
+chat-core.js
+server.js
+overlay.html
+control-panel.html
+FIND THIS CODE
+Show me the exact line, section, function, button, div, CSS block, or code snippet I must locate.
+
+Example:
+FIND THIS IN chat.html:
+
+ADD THIS DIRECTLY ABOVE
+OR
+ADD THIS DIRECTLY BELOW
+
+Show the exact placement.
+
+Example:
+
+ADD THIS DIRECTLY ABOVE:
+
+PASTE:
+
+[new code here]
+
+OR
+
+ADD THIS DIRECTLY BELOW:
+
+PASTE:
+
+[new code here]
+
+IF REPLACING CODE
+
+Use:
+
+REMOVE THIS:
+
+[old code]
+
+REPLACE WITH:
+
+[new code]
+
+IF MULTIPLE FILES ARE REQUIRED
+
+Separate every file into sections.
+
+Example:
+
+STEP 1 - chat.html
+
+STEP 2 - chat-core.js
+
+STEP 3 - server.js
+
+STEP 4 - overlay.html
+
+Never mix code from different files.
+
+ALWAYS EXPLAIN THE FINAL RESULT
+
+Include a section called:
+
+FINAL RESULT SHOULD LOOK EXACTLY LIKE THIS
+
+Describe exactly what the user should see.
+
+Example:
+
+FINAL RESULT SHOULD LOOK EXACTLY LIKE THIS:
+
+Vote buttons appear horizontally.
+Chat buttons appear above the chat box.
+Mobile and desktop layouts match.
+Camera preview appears before sending.
+Overlay displays reactions correctly.
+ALWAYS LIST CHANGES
+
+Include:
+
+WHAT THIS CHANGE DOES:
+
+Fixes button alignment.
+Fixes mobile layout.
+Fixes image preview.
+Fixes vote responsiveness.
+IF CODE IS VERY LARGE
+
+Never say:
+"Insert somewhere in your file."
+
+Instead say:
+
+Find this function:
+
+function openCamera(){
+
+Place the following code as the first line inside the function.
+
+OR
+
+Place the following code immediately before:
+
+socket.emit(...)
+
+OR
+
+Place the following code immediately after:
+
+document.getElementById(...)
+
+NEVER MAKE ME GUESS
+
+If there is any possibility of confusion:
+
+Show:
+
+exact file
+exact location
+exact before line
+exact after line
+exact replacement
+WHEN DEBUGGING
+
+First tell me:
+
+SEND ME:
+
+chat.html
+chat-core.js
+server.js
+overlay.html
+
+Then wait until you see the actual code before assuming where something exists.
+
+ALWAYS VERIFY
+
+Before giving code, check:
+
+Which file it belongs in.
+Whether it already exists.
+Whether it conflicts with existing code.
+ALWAYS USE STEP-BY-STEP FORMAT
+
+STEP 1
+Open file.
+
+STEP 2
+Find code.
+
+STEP 3
+Paste code.
+
+STEP 4
+Save file.
+
+STEP 5
+Restart server if required.
+
+NEVER GIVE GENERIC INSTRUCTIONS
+
+Always provide:
+
+exact file name
+exact location
+exact code placement
+expected final result
+
+END OF INSTRUCTIONS

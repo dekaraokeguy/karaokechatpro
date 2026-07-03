@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Karaoke Performances</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin:0;
+      font-family:Arial;
+      background:#000;
+      color:#fff;
+    }
+
+    h1 {
+      text-align:center;
+      padding:15px;
+    }
+
+    #grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap:10px;
+      padding:10px;
+    }
+
+    .card {
+      background:#111;
+      border-radius:10px;
+      overflow:hidden;
+      cursor:pointer;
+    }
+
+    video {
+      width:100%;
+      height:120px;
+      object-fit:cover;
+    }
+
+    .title {
+      padding:6px;
+      font-size:12px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🎤 Karaoke Performances</h1>
+
+<div id="grid"></div>
+
+<script>
+async function loadVideos() {
+  const res = await fetch("/list-performances");
+  const files = await res.json();
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  files.forEach(f => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const vid = document.createElement("video");
+    vid.src = f.path;
+    vid.muted = true;
+    vid.autoplay = true;
+    vid.loop = true;
+
+    const title = document.createElement("div");
+    title.className = "title";
+    title.textContent = f.title;
+
+    card.appendChild(vid);
+    card.appendChild(title);
+
+    card.onclick = () => {
+      window.open(f.path, "_blank");
+    };
+
+    grid.appendChild(card);
+  });
+}
+
+loadVideos();
+</script>
+
+</body>
+</html>

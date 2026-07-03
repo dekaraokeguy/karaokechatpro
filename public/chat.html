@@ -1,0 +1,5136 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<title>Dean De Karaoke Guy Show</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+
+<meta
+  name="theme-color"
+  content="#000000"
+>
+
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
+<meta
+  name="mobile-web-app-capable"
+  content="yes"
+>
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="black"
+>
+
+<meta
+  name="apple-mobile-web-app-title"
+  content="Karaoke Live Lite"
+>
+
+<link rel="icon" href="/logo.png">
+
+<style>
+
+/* =========================
+   🎂 MODERN BIRTHDAY MODAL
+========================= */
+
+.birthdayModal{
+  display:none;
+  position:fixed;
+  inset:0;
+
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(12px);
+
+  z-index:9999999999;
+}
+
+.birthdayModalContent{
+  width:95%;
+  max-width:500px;
+
+  background:rgba(15,20,35,.92);
+
+  backdrop-filter:blur(18px);
+
+  border-radius:28px;
+
+  padding:24px;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    0 0 40px rgba(0,0,0,.7),
+    0 0 25px rgba(255,105,180,.25),
+    0 0 20px rgba(0,200,255,.18);
+
+  animation:birthdayModalPop .3s ease;
+}
+
+.birthdayInput{
+  width:100%;
+  padding:14px 16px;
+  margin-bottom:14px;
+
+  border-radius:18px;
+
+  border:1px solid rgba(0,255,255,.25);
+
+  background:rgba(255,255,255,.05);
+
+  color:white;
+
+  font-size:16px;
+
+  outline:none;
+
+  transition:.25s;
+}
+
+.birthdayInput:focus{
+  border-color:#00ffcc;
+
+  box-shadow:
+    0 0 15px rgba(0,255,200,.4);
+
+  background:rgba(255,255,255,.08);
+}
+
+.birthdayHeader{
+  text-align:center;
+
+  font-size:28px;
+
+  font-weight:900;
+
+  margin-bottom:20px;
+
+  color:#ffd700;
+
+  text-shadow:
+    0 0 12px rgba(255,215,0,.8),
+    0 0 25px rgba(255,105,180,.5);
+}
+
+.sendBirthdayBtn{
+  width:100%;
+
+  padding:16px;
+
+  border:none;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffd700,
+      #ff9d00
+    );
+
+  color:#000;
+
+  font-size:17px;
+
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+.closeBirthdayBtn{
+  width:100%;
+
+  margin-top:12px;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  color:white;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+@keyframes birthdayModalPop{
+
+  from{
+    opacity:0;
+    transform:scale(.9) translateY(20px);
+  }
+
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+  }
+
+}
+
+/* =========================
+   🏆 HEADER BUTTONS
+========================= */
+
+
+#openVoteBtn,
+#openLeaderboardBtn{
+  animation:none !important;
+}
+
+/* 🗳️ VOTE */
+#openVoteBtn{
+  color:#00ffcc;
+}
+
+/* 🏆 RANKS */
+#openLeaderboardBtn{
+  color:#ffd700;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* 🔥 MAIN BACKGROUND (RESTORED + ENHANCED) */
+/* =========================
+   🎨 USER THEMES
+========================= */
+
+/* 🌌 CURRENT APP */
+.theme-neon body{
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,200,255,0.25), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(0,200,255,0.18), transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(0,150,255,0.15), transparent 50%),
+    linear-gradient(
+      180deg,
+      #020617 0%,
+      #061a2b 40%,
+      #020617 100%
+    );
+}
+
+/* 💼 BUSINESS */
+.theme-business body{
+  background:
+    linear-gradient(
+      180deg,
+      #1b1f24,
+      #28313b,
+      #1b1f24
+    );
+}
+
+/* ✨ MODERN */
+.theme-modern body{
+  background:
+    linear-gradient(
+      135deg,
+      #1f1147,
+      #111827,
+      #0ea5e9
+    );
+}
+html,body{
+  height:100%;
+  overflow:hidden; /* 🔥 ADD THIS (CRITICAL) */
+  font-family:Arial;background-blend-mode: screen;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,200,255,0.25), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(0,200,255,0.18), transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(0,150,255,0.15), transparent 50%),
+    linear-gradient(180deg, #020617 0%, #061a2b 40%, #020617 100%);
+}
+
+#chatContainer{
+  display:none;
+  flex-direction:column;
+  height:100vh;
+  overflow:hidden;
+
+  /* 🔥 MORE ROOM */
+  padding-top:88px;
+}.message.active{
+  transform:scale(0.97);
+  background:rgba(0,200,255,0.25) !important;
+  box-shadow:0 0 25px #00cfff;
+}
+
+/* 🔥 LOGIN SCREEN */
+#login{
+  flex:1;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  text-align:center;
+}
+
+/* 🔥 LOGIN CARD GLOW */
+.loginCard{
+  background:rgba(15,27,76,0.75);
+  padding:25px 20px;
+  border-radius:20px;
+  width:100%;
+  max-width:400px;
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 0 25px rgba(0,200,255,0.25),
+    0 10px 25px rgba(0,0,0,0.6);
+}
+
+html { font-size: clamp(14px, 1.2vw, 14px); }
+
+.app {
+  width:100%;
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+input, textarea, button { font-size: 16px; }
+
+/* 🔥 MIC ICON GLOW */
+.micIcon{
+  width:60px;
+  height:60px;
+  background:linear-gradient(135deg,#00cfff,#0066ff);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  margin:0 auto 15px;
+
+  box-shadow:0 0 15px rgba(0,200,255,0.6);
+}
+
+/* 🔥 LOGO GLOW */
+.loginLogo{
+  width:100%;
+  max-width:280px;
+  margin:0 auto 15px auto;
+  display:block;
+  animation: glowPulse 2s infinite ease-in-out;
+}
+
+@keyframes glowPulse{
+  0%{filter: drop-shadow(0 0 5px #00cfff);}
+  50%{filter: drop-shadow(0 0 20px #00cfff);}
+  100%{filter: drop-shadow(0 0 5px #00cfff);}
+}
+
+#login h2{
+  font-size:20px;
+  margin-bottom:5px;
+  color:#ffffff;
+}
+#login p{
+  color:#cccccc; /* 🔥 light grey for readability */
+  margin-bottom:15px;
+}
+
+/* 🔥 INPUT */
+.sendBirthdayBtn{
+
+  width:100%;
+
+  padding:16px;
+
+  border:none;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffd700,
+      #ff9d00
+    );
+
+  color:#000;
+
+  font-size:17px;
+
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+.sendBirthdayBtn:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 0 25px rgba(255,215,0,.6);
+}
+
+.closeBirthdayBtn{
+
+  width:100%;
+
+  margin-top:12px;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:20px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  color:white;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+.closeBirthdayBtn:hover{
+
+  background:
+    rgba(255,255,255,.15);
+}
+#login input{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:25px;
+  margin-bottom:15px;
+  font-size:16px;
+
+  background:rgba(255,255,255,0.1);
+  color:#fff;
+}
+
+/* 🔥 BUTTON */
+#login button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:25px;
+
+  background:linear-gradient(135deg,#00cfff,#0066ff);
+  color:#fff;
+  font-weight:bold;
+  font-size:16px;
+
+  box-shadow:0 0 12px rgba(0,200,255,0.5);
+}
+
+/* 🔥 HEADER */
+/* ========================= */
+/* 🔥 TIKTOK SLIDE-IN BUTTONS */
+/* ========================= */
+/* 🔥🔥🔥 ADD YOUR NEW BUTTON CSS RIGHT HERE 🔥🔥🔥 */
+
+/* 🔥 MODERN MENU BUTTONS */
+.menuActionBtn{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 14px;
+
+  border-radius:16px;
+  cursor:pointer;
+
+  font-size:16px;
+font-weight:bold;
+min-width:90px;
+height:48px;  backdrop-filter: blur(12px);
+
+  transition: all 0.2s ease;
+}
+
+/* 🔵 DOWNLOAD STYLE */
+.downloadBtn{
+  color:#00e5ff;
+  background:linear-gradient(135deg, rgba(0,200,255,0.25), rgba(0,80,120,0.4));
+  border:1px solid rgba(0,200,255,0.6);
+
+  box-shadow:
+    0 0 12px rgba(0,200,255,0.6),
+    inset 0 0 8px rgba(255,255,255,0.1);
+}
+
+/* 🟣 BROWSE STYLE */
+.browseBtn{
+  color:#ff66ff;
+  background:linear-gradient(135deg, rgba(255,0,255,0.2), rgba(100,0,100,0.4));
+  border:1px solid rgba(255,0,255,0.6);
+
+  box-shadow:
+    0 0 12px rgba(255,0,255,0.6),
+    inset 0 0 8px rgba(255,255,255,0.1);
+}
+/* 📲 INSTALL STYLE */
+.installBtn{
+  color:#00ffcc;
+
+  background:linear-gradient(
+    135deg,
+    rgba(0,255,180,0.22),
+    rgba(0,80,60,0.45)
+  );
+
+  border:1px solid rgba(0,255,180,0.65);
+
+  box-shadow:
+    0 0 12px rgba(0,255,180,0.55),
+    inset 0 0 8px rgba(255,255,255,0.08);
+}
+/* 🔥 HOVER + PRESS */
+.menuActionBtn:hover{
+  transform:scale(1.08);
+}
+
+.menuActionBtn:active{
+  transform:scale(0.92);
+  filter:brightness(1.3);
+}
+
+.menuBtnItem{
+  opacity:0;
+  transform:translateX(80px) scale(0.9);
+  transition:all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 🔥 ACTIVE STATE (SLIDES IN) */
+.menuBtnItem.show{
+  opacity:1;
+  transform:translateX(0) scale(1);
+}
+
+/* 🔥 STAGGER DELAY (NATURAL FEEL) */
+.menuBtnItem:nth-child(1){ transition-delay:0.05s; }
+.menuBtnItem:nth-child(2){ transition-delay:0.12s; }
+
+/* 🔥 PRESS FEEDBACK */
+.menuBtnItem:active{
+  transform:scale(0.92);
+}
+/* =========================
+   🔥 FIXED HEADER LAYOUT
+========================= */
+
+/* =========================
+   🔥 ULTRA CLEAN MOBILE HEADER
+========================= */
+
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:100000;
+
+  pointer-events:auto;
+overflow:visible;
+  display:flex;
+  flex-direction:column;
+
+  padding:6px 8px;
+
+  background:linear-gradient(
+    180deg,
+    rgba(2,6,23,0.96),
+    rgba(6,26,43,0.96)
+  );
+
+  backdrop-filter:blur(10px);
+
+  border-bottom:
+    1px solid rgba(0,200,255,0.15);
+
+  gap:6px;
+}
+
+/* 🎤 TITLE */
+.headerTitle{
+  font-size:15px;
+  font-weight:900;
+
+  display:flex;
+  align-items:center;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00cfff,
+      #ffffff,
+      #00cfff
+    );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:
+    0 0 10px rgba(0,200,255,0.5);
+
+  line-height:1.1;
+}
+
+/* =========================
+   🔥 BUTTON AREA
+========================= */
+
+.headerActions{
+  display:flex;
+  align-items:center;
+
+  width:100%;
+
+  position:relative;
+  z-index:999999;
+
+  overflow:visible;
+  pointer-events:auto;
+
+  gap:12px;
+}
+.headerActions > *{
+  min-width:0;
+}/* =========================
+   🔥 BUTTON BASE
+========================= */
+
+.menuActionBtn,
+.logoutBtn{
+
+  flex:0 1 auto;
+  min-width:90px;
+
+  width:100%;
+
+  height:38px;
+
+  border-radius:12px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:4px;
+
+  font-size:11px;
+  font-weight:bold;
+
+  white-space:nowrap;
+
+  padding:0 6px;
+
+  cursor:pointer;
+
+  transition:0.18s ease;
+}
+
+.menuActionBtn:active,
+.logoutBtn:active{
+  transform:scale(0.95);
+}
+
+/* 🔥 BUTTON TEXT */
+.menuActionBtn span,
+.logoutBtn span{
+  font-size:10px;
+}
+/* 🔥 FIX BUTTON TAP ISSUES */
+#logoutBtn,
+#installBtn,
+#accountBtn,
+#downloadBtn,
+#browseBtn,
+#openVoteBtn,
+#openLeaderboardBtn{
+  pointer-events:auto !important;
+  position:relative;
+  z-index:999999 !important;
+}
+/* =========================
+   🔥 PERFECT MOBILE ORDER
+========================= */
+/* ROW 1 */
+
+/* 🗳️ VOTE */
+#openVoteBtn{
+  grid-column:1;
+  grid-row:1;
+}
+
+/* 🏆 RANKS */
+#openLeaderboardBtn{
+  grid-column:2;
+  grid-row:1;
+}
+
+/* ▶️ BROWSE */
+#browseBtn{
+  grid-column:3;
+  grid-row:1;
+
+  opacity:1 !important;
+  transform:none !important;
+
+  position:relative;
+  z-index:2;
+}
+
+/* ⬇️ DOWNLOAD */
+#downloadBtn{
+  display:flex !important;
+
+  grid-column:4;
+  grid-row:1;
+
+  opacity:1 !important;
+  transform:none !important;
+
+  position:relative;
+  z-index:2;
+}
+/* 🚪 LOGOUT */
+#logoutBtn{
+  grid-column:5;
+  grid-row:1;
+
+  position:relative;
+  z-index:999999 !important;
+
+  pointer-events:auto !important;
+
+  touch-action:manipulation;
+
+  display:flex !important;
+}
+/* 👤 ACCOUNT */
+#accountBtn{
+  grid-column:4;
+  grid-row:2;
+
+  position:relative;
+  z-index:1;
+}
+
+/* 📲 INSTALL */
+#installBtn{
+  grid-column:5;
+  grid-row:2;
+
+  display:flex !important;
+
+  position:relative;
+  z-index:999999 !important;
+
+  pointer-events:auto !important;
+
+  opacity:1 !important;
+  transform:none !important;
+
+  width:100%;
+}
+/* =========================
+   🔥 SMALLER HEADER HEIGHT
+========================= */
+
+#chatContainer{
+  padding-top:92px;
+}
+
+/* =========================
+   🔥 EXTRA SMALL DEVICES
+========================= */
+
+@media screen and (max-width:480px){
+
+  .header{
+    padding:5px 6px;
+    gap:5px;
+  }
+
+  .headerTitle{
+    font-size:13px;
+  }
+
+  .menuActionBtn,
+  .logoutBtn{
+    height:34px;
+    border-radius:10px;
+    font-size:10px;
+    padding:0 4px;
+  }
+
+  .menuActionBtn span,
+  .logoutBtn span{
+    font-size:9px;
+  }
+
+}
+/* 🔥 FORCE MOBILE BUTTON TAPS */
+.headerActions button,
+.headerActions div,
+.headerActions a{
+  pointer-events:auto !important;
+  touch-action:manipulation;
+}
+/* 🔥 EXTRA SMALL DEVICES */
+
+
+
+/* 🔥 CHAT AREA */
+#messages{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+
+  overflow-y:auto !important;
+  overflow-x:hidden;
+
+  pointer-events:auto !important;
+
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+
+  padding:12px;
+  padding-right:140px;
+
+  gap:10px;
+
+  margin-top: calc(70px + env(safe-area-inset-top));
+  padding-bottom:220px;
+
+  scroll-behavior:smooth;
+}
+/* 🔥 MESSAGE BASE */
+.message{
+  max-width:65%; /* 🔥 REDUCE WIDTH */
+  padding:12px 16px;
+  border-radius:20px;
+
+  background:rgba(255,255,255,0.08);
+  background:rgba(10,10,20,0.96);
+
+  border:1px solid rgba(255,255,255,0.15);
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,0.5),
+    0 0 10px rgba(0,200,255,0.2);
+}
+
+/* 🔥 ADD RIGHT HERE */
+.message img{
+  max-width:100%;
+  width:auto;
+  height:auto;
+  border-radius:12px;
+  margin-top:6px;
+  display:block;
+}
+
+/* KEEP YOUR COLOR SYSTEM EXACTLY */
+.user1{background:linear-gradient(135deg,#ff416c,#ff4b2b);}
+.user2{background:linear-gradient(135deg,#ff9a00,#ff6a00);}
+.user3{background:linear-gradient(135deg,#f7971e,#ffd200);}
+.user4{background:linear-gradient(135deg,#00c6ff,#0072ff);}
+.user5{background:linear-gradient(135deg,#00f260,#0575e6);}
+.user6{background:linear-gradient(135deg,#43e97b,#38f9d7);}
+.user7{background:linear-gradient(135deg,#fa709a,#fee140);}
+.user8{background:linear-gradient(135deg,#30cfd0,#330867);}
+
+.self{
+  align-self:flex-end;
+  filter:brightness(1.2);
+}
+
+#stickerPanel{
+  display:none;
+  padding:8px;
+  background:#1b0033;
+
+  max-height:180px;
+  overflow-y:scroll; /* 🔥 FORCE SCROLLBAR ALWAYS */
+
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:6px;
+}
+/* ✅ CLEAN EMOJI PANEL (FINAL FIX) */
+#emojiPanel span{
+  font-size:28px;   /* 🔥 BIGGER EMOJIS */
+  cursor:pointer;
+  padding:8px;
+  border-radius:10px;
+  transition:0.15s;
+}
+
+#emojiPanel span:active{
+  transform:scale(1.3);
+  background:rgba(255,255,255,0.2);
+}
+#emojiPanel{
+  display:none;
+  position:fixed;
+
+  bottom:70px;
+  left:0;
+  width:100%;
+
+  z-index:9999;
+
+  padding:10px;
+  background:#1b0033;
+
+  max-height:160px;
+  overflow-y:auto;
+
+ 
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+
+  transition:0.2s;
+}
+/* ========================= */
+/* 🔥 ADD RIGHT BELOW HERE 🔥 */
+/* ========================= */
+
+#stickerScrollControls{
+  position:absolute;
+  right:0px; /* 🔥 tighter to edge */
+  top:0;
+  bottom:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  z-index:10000;
+  pointer-events:none;
+}
+
+/* BIGGER + BRIGHTER */
+#scrollUp, #scrollDown{
+  pointer-events:auto;
+  background:rgba(0,0,0,0.85);
+
+  color:#00ffcc; /* 🔥 NEON GREEN */
+
+  font-size:20px;
+  padding:6px 8px;
+  border-radius:8px;
+  text-align:center;
+  cursor:pointer;
+  user-select:none;
+
+  box-shadow:
+    0 0 10px #00ffcc,
+    0 0 20px rgba(0,255,204,0.7);
+}
+
+/* ========================= */
+/* 🔥 CONTINUE YOUR SCRIPT 🔥 */
+/* ========================= */
+/* 🔥 VISIBLE SCROLLBAR (DESKTOP + ANDROID) */
+#stickerPanel::-webkit-scrollbar{
+  width:12px; /* 🔥 THICKER */
+}
+
+#stickerPanel::-webkit-scrollbar-track{
+  background:#050010; /* darker contrast */
+  border-radius:10px;
+}
+
+#stickerPanel::-webkit-scrollbar-thumb{
+  background:#FFD700; /* 🔥 YELLOW */
+  border-radius:10px;
+  border:2px solid #1b0033; /* 🔥 pulls it closer visually */
+}
+/* 🔥 FORCE MOBILE SCROLLBAR VISIBILITY */
+@media screen and (max-width:480px){
+  #stickerPanel{
+    max-height:220px; /* 🔥 MORE SPACE */
+    padding:8px 2px 8px 8px; /* 🔥 LESS RIGHT SPACE */
+}
+}
+
+/* 🔥 FIREFOX SUPPORT */
+#stickerPanel{
+  scrollbar-width:thin;
+  scrollbar-color:#00cfff #0a001a;
+}
+#menuDropdown{
+  display:none;
+}
+/* make stickers look like grid items */
+#stickerPanel img{
+  width:70px;
+  border-radius:8px;
+  cursor:pointer;
+}
+#performanceList{
+  position:fixed;
+  bottom:70px; /* sits above input bar */
+  left:10px;
+  right:10px;
+  z-index:9999;
+}
+/* 🔥 SCROLLBAR STYLE FOR PERFORMANCE LIST (DESKTOP + MOBILE) */
+#performanceList::-webkit-scrollbar{
+  width:12px; /* thicker */
+}
+
+#performanceList::-webkit-scrollbar-track{
+  background:#050010; /* darker contrast */
+  border-radius:10px;
+}
+
+#performanceList::-webkit-scrollbar-thumb{
+  background:#FFD700; /* gold / neon */
+  border-radius:10px;
+  border:2px solid #1b0033;
+  box-shadow: 0 0 8px #FFD700, 0 0 16px rgba(255,215,0,0.5);
+  transition: all 0.2s ease-in-out;
+}
+
+#performanceList::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 12px #FFD700, 0 0 24px rgba(255,215,0,0.7);
+  background: #FFE066;
+}
+
+/* 🔥 FORCE MOBILE SCROLLBAR VISIBILITY */
+@media screen and (max-width:480px){
+  #performanceList{
+    max-height:300px; /* matches your JS maxHeight */
+    padding-right:6px; /* matches JS padding */
+  }
+}
+
+/* 🔥 FIREFOX SUPPORT */
+#performanceList{
+  scrollbar-width:thin;
+  scrollbar-color:#FFD700 #050010;
+}
+/* 🔥 INPUT BAR */
+.inputBar{
+  display:none; /* ✅ HIDE ON LOGIN */ /* ✅ ADD THIS */
+  align-items:center;
+  padding:8px;
+  gap:8px;
+
+  background:linear-gradient(90deg,#020617,#061a2b);
+
+  position:fixed; /* 🔥 CHANGE */
+  bottom:0;
+  left:0;
+  width:100%;
+ transform: translateZ(0); /* 🔥 prevents mobile slide bug */
+  z-index:9999;
+
+  padding-bottom: calc(8px + env(safe-area-inset-bottom)); /* 🔥 iPhone fix */
+
+  box-shadow:0 -2px 10px rgba(0,0,0,0.6);
+}
+/* ========================= */
+/* 🔥 RIGHT SIDE CONTROLS (TIKTOK STYLE) */
+/* ========================= */
+
+.rightControls{
+
+  position:fixed;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  z-index:9999;
+
+  pointer-events:none;
+
+  max-height:85vh;
+  overflow-y:auto;
+  padding-right:4px;
+}
+
+/* 🔥 TEXTURED BUTTON (LIKE YOUR IMAGE) */
+.controlBtn{
+  width:78px;
+  height:78px;
+  border-radius:22px;
+
+  pointer-events:auto;
+  touch-action:manipulation;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:34px;
+
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.12), rgba(0,0,0,0.6));
+
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,0.15),
+    0 6px 20px rgba(0,0,0,0.8),
+    0 0 15px rgba(0,200,255,0.4);
+
+  transition: all 0.2s ease;
+}
+/* 🔥 ADD THE NEW CODE DIRECTLY BELOW HERE */
+
+ /* =========================
+ 🔥 SLOW PULSE FOR CHAT ICONS
+ ========================= */
+
+.btn-camera,
+.btn-attach,
+.btn-emoji,
+.btn-sticker{
+  transition:0.2s;
+}
+/* ❤️ HEART BUTTON STAYS FASTER */
+.btn-hearts{
+  animation: heartPulse 1.8s infinite ease-in-out;
+}
+
+/* 🔥 SLOW FLOATING GLOW */
+@keyframes slowPulse{
+  0%{
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(0,255,255,0);
+  }
+
+  50%{
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(0,255,255,0.45);
+  }
+
+  100%{
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(0,255,255,0);
+  }
+}
+
+/* ❤️ HEART BUTTON STRONGER + FASTER */
+@keyframes heartPulse{
+  0%{
+    transform: scale(1);
+  }
+
+  50%{
+    transform: scale(1.15);
+  }
+
+  100%{
+    transform: scale(1);
+  }
+}
+
+/* 🌊 WAVE EFFECT */
+.btn-camera{
+  animation-delay: 0s;
+}
+
+.btn-attach{
+  animation-delay: 0.5s;
+}
+
+.btn-emoji{
+  animation-delay: 1s;
+}
+
+.btn-sticker{
+  animation-delay: 1.5s;
+}
+.btnIcon{
+  font-size:36px; /* 🔥 smaller icon */
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+/* ========================= */
+/* 🔥 BUTTON INNER LAYOUT */
+/* ========================= */
+.btnInner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px; /* 🔥 spacing between icon + text */
+}
+
+.btnLabel{
+  font-size:12px;
+  opacity:0.88;
+  text-align:center;
+}.controlBtn:active{
+  transform:scale(0.96);
+}
+/* 🔥 COLORS PER BUTTON */
+.btn-camera{ color:#00e5ff; }
+.btn-attach{ color:#ffd700; }
+.btn-emoji{ color:#ffcc00; }
+.btn-sticker{ color:#ff66cc; }
+.btn-camera{ color:#00e5ff; }
+.btn-attach{ color:#ffd700; }
+.btn-emoji{ color:#ffcc00; }
+.btn-sticker{ color:#ff66cc; }
+.btn-hearts{ color:#ff4d6d; }
+
+/* 🔥 TEXTAREA */
+textarea{
+resize:none;
+outline:none;
+  flex:1;
+  border-radius:30px;
+  border:none;
+  padding:14px 18px;
+  font-size:16px;
+  height:52px;
+
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,0.1),
+    0 0 10px rgba(0,200,255,0.2);
+}
+
+/* ICONS */
+.iconBtn{font-size:24px;color:#00cfff;cursor:pointer;}
+.sendBtn{
+  font-size:26px;
+
+  color:#00cc66; /* 🔥 GREEN ICON */
+
+  background:#ffffff; /* 🔥 WHITE BUTTON */
+
+  width:50px;
+  height:50px;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:0 0 10px rgba(0,255,150,0.6);
+}
+#menuDropdown{
+  color:#ffffff;
+}
+
+#menuDropdown div{
+  color:#ffffff;
+}
+
+/* MEDIA */
+@media screen and (max-width:480px){
+
+  #stickerPanel{
+    max-height:220px;
+    padding-right:0px;
+  }
+
+  #stickerScrollControls{
+    position:absolute;
+    right:0px;
+    top:0;
+    bottom:60px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    z-index:10000;
+    pointer-events:none;
+  }
+
+  .message img{
+    max-width:100%;
+    height:auto;
+    max-height:60vh;
+  }
+
+  .popupOverlay{
+    pointer-events:auto;
+}
+
+  .popupOverlay.show{
+    pointer-events:auto;
+  }
+
+  #menuDropdown{
+    pointer-events:auto;
+  }
+
+  #performanceList{
+    pointer-events:auto;
+  }
+
+} /* ← THIS WAS MISSING */
+
+@media screen and (min-width:481px){
+  .message img{
+    max-height:400px;
+  }
+}
+
+/* 🔥 FIX PREVIEW IMAGE SIZE */
+#preview img{
+  max-width:100%;
+  max-height:150px;
+  border-radius:12px;
+  display:block;
+  margin:auto;
+}
+#imgPreviewPopup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+}
+
+#imgPreviewPopup img{
+  max-width:90%;
+  max-height:80%;
+  border-radius:12px;
+}
+/* 🔥 TYPING INDICATOR (WHATSAPP STYLE) */
+#typingIndicator{
+  position:fixed;
+  bottom:80px;
+  left:12px;
+  color:#ccc;
+  font-size:14px;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* animated dots */
+.typingDots{
+  display:inline-flex;
+  gap:4px;
+}
+
+.typingDots span{
+  width:6px;
+  height:6px;
+  background:#00cfff;
+  border-radius:50%;
+  animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.typingDots span:nth-child(2){
+  animation-delay:0.2s;
+}
+.typingDots span:nth-child(3){
+  animation-delay:0.4s;
+}
+
+@keyframes typingBounce{
+  0%, 80%, 100% { transform:scale(0); opacity:0.3; }
+  40% { transform:scale(1); opacity:1; }
+}
+#heartsContainer{
+  position:fixed;
+  bottom:90px;
+
+  /* 🔥 MOVE INWARD FROM EDGE */
+  right:80px;   /* was 20px → now visible */
+
+  width:120px;  /* 🔥 give space to spread */
+  height:300px;
+
+  pointer-events:none;
+  z-index:99999;
+}
+
+.heart{
+  position:absolute;
+  bottom:0;
+
+  font-size:24px;
+  opacity:0.9;
+
+  animation: floatHeart linear forwards;
+}
+
+/* 🔥 NEW NATURAL FLOAT (NOT STRAIGHT LINE) */
+@keyframes floatHeart{
+  0%{
+    transform: translate(0,0) scale(1) rotate(0deg);
+    opacity:1;
+  }
+
+  25%{
+    transform: translate(-15px,-80px) scale(1.2) rotate(-10deg);
+  }
+
+  50%{
+    transform: translate(10px,-160px) scale(1.4) rotate(10deg);
+  }
+
+  75%{
+    transform: translate(-10px,-220px) scale(1.6) rotate(-5deg);
+  }
+
+  100%{
+    transform: translate(5px,-300px) scale(1.8);
+    opacity:0;
+  }
+}
+.whatsappMic{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:#25D366;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,0.4);
+  transition:0.2s;
+}
+
+.whatsappMic.recording{
+  background:#ff0033;
+  transform:scale(1.2);
+  box-shadow:0 0 20px red;
+}
+/* ========================= */
+/* ❤️ HEART BUTTON PULSE */
+/* ========================= */
+
+
+/* 🔥 ACTIVE PULSE STATE */
+.btn-hearts.pulse {
+  animation: heartPulse 1.6s infinite ease-in-out;
+}
+
+/* ❤️ HEART ICON BEAT */
+.btn-hearts.pulse .btnIcon {
+  display: inline-block;
+  animation: heartBeat 1.2s infinite;
+}
+
+/* 🌊 GLOW RING */
+.btn-hearts.pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(255, 0, 100, 0.7);
+  animation: heartWave 1.6s infinite;
+}
+
+/* ANIMATIONS */
+@keyframes heartPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes heartBeat {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.2); }
+  40%  { transform: scale(1); }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes heartWave {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 100, 0.7);
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 18px rgba(255, 0, 100, 0);
+    opacity: 0.4;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 100, 0);
+    opacity: 0;
+  }
+}
+/* ❤️ CONSTANT HEART PULSE (NEVER STOPS) */
+@keyframes heartBeat {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.15); }
+  40%  { transform: scale(1); }
+  60%  { transform: scale(1.12); }
+  80%  { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+.btn-hearts {
+  animation: heartBeat 0.9s infinite cubic-bezier(.4,0,.2,1);
+}
+/* HEADER TITLE */
+.headerTitle{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:0.5px;
+
+  background: linear-gradient(90deg,#00cfff,#ffffff,#00cfff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:
+    0 0 10px rgba(0,200,255,0.6),
+    0 0 20px rgba(0,200,255,0.4);
+}
+
+/* LOGOUT */
+.logoutBtn{
+    padding:6px 12px;
+  pointer-events:auto;
+  touch-action:manipulation;;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+  color:#ff4d6d;
+  background:linear-gradient(135deg, rgba(255,0,80,0.25), rgba(80,0,20,0.5));
+  border:1px solid rgba(255,0,80,0.6);
+  box-shadow:0 0 10px rgba(255,0,80,0.6);
+}
+
+.logoutBtn:hover{ transform:scale(1.08); }
+.logoutBtn:active{ transform:scale(0.9); }
+
+/* DROPDOWN CONTAINER */
+#menuDropdown{
+  position:absolute;
+  top:55px;
+  right:10px;
+  background:rgba(10,10,20,0.95);
+  backdrop-filter:blur(12px);
+  padding:12px;
+  border-radius:16px;
+  display:none;
+  z-index:99999;
+  box-shadow:0 0 20px rgba(0,0,0,0.8);
+}
+
+/* DROPDOWN BUTTONS */
+.dropdownBtn{
+  display:flex;
+  justify-content:center;
+  padding:10px;
+  margin-bottom:8px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.browseStyle{
+  color:#ff66ff;
+  border:1px solid rgba(255,0,255,0.6);
+}
+
+.downloadStyle{
+  color:#00e5ff;
+  border:1px solid rgba(0,200,255,0.6);
+}
+/* ========================= */
+/* 🗳️ VOTING POPUP SYSTEM */
+/* ========================= */
+
+.popupOverlay{
+
+  position:fixed;
+  inset:0;
+
+  display:none;
+
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(0,0,0,.72);
+
+  backdrop-filter:blur(6px);
+
+  z-index:999999999;
+
+  opacity:0;
+
+  visibility:hidden;
+
+  pointer-events:none;
+
+  transition:.25s;
+
+}
+/* ACTIVE STATE */
+.popupOverlay.show{
+
+  display:flex;
+
+  opacity:1;
+
+  visibility:visible;
+
+  pointer-events:auto;
+
+}/* 🏆 WINNER POPUP FIX */
+
+#winnerPopup{
+  z-index:999999999 !important;
+}
+
+#winnerPopup .popupCard{
+  position:relative;
+  z-index:2;
+}
+/* POPUP CARD */
+.popupCard{
+  width:92%;
+  max-width:420px;
+
+  max-height:85vh;
+
+  overflow-y:auto;
+
+  background:linear-gradient(
+    180deg,
+    #111827 0%,
+    #0f172a 100%
+  );
+
+  border-radius:24px;
+
+  padding:20px;
+
+  box-shadow:
+    0 0 30px rgba(0,0,0,0.7),
+    0 0 20px rgba(0,200,255,0.18);
+
+  transform:translateY(30px) scale(0.96);
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+
+  opacity:0;
+}
+
+/* POPUP ENTER */
+.popupOverlay.show .popupCard{
+  transform:translateY(0) scale(1);
+  opacity:1;
+}
+
+/* MOBILE SAFE */
+.popupCard::-webkit-scrollbar{
+  width:10px;
+}
+
+.popupCard::-webkit-scrollbar-thumb{
+  background:#00cfff;
+  border-radius:10px;
+}
+
+/* TITLES */
+.popupTitle{
+  text-align:center;
+  font-size:24px;
+  font-weight:900;
+
+  margin-bottom:18px;
+}
+#leaderboardPopup{
+  color:#ffffff;
+}
+
+#leaderboardPopup .popupCard{
+  background:#101820;
+  color:#ffffff;
+}
+
+#leaderboardPopup .popupTitle{
+  color:#ffd700;
+}
+
+#leaderboardList{
+  color:#ffffff;
+}
+#leaderboardList .leaderboardRow{
+  color:#ffffff !important;
+}
+
+#leaderboardList .leaderboardRow *{
+  color:#ffffff !important;
+}
+#contestantList select{
+  background:#101820 !important;
+  color:#00ffcc !important;
+  border:1px solid #00ffcc !important;
+}
+
+#contestantList option{
+  background:#101820;
+  color:#00ffcc;
+}
+/* BUTTONS */
+.popupBtn{
+  width:100%;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:16px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:0.2s;
+}
+
+.popupBtn:active{
+  transform:scale(0.96);
+}
+
+/* CLOSE BUTTON */
+.closePopupBtn{
+  background:#222;
+  color:#fff;
+  margin-top:16px;
+}
+
+/* CONTESTANT ROW */
+.contestantRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  padding:12px;
+
+  margin-bottom:10px;
+
+  border-radius:16px;
+
+  background:rgba(255,255,255,0.05);
+
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+/* VOTE BUTTON */
+.voteBtn{
+  padding:10px 16px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:#00cfff;
+
+  color:#000;
+
+  font-weight:bold;
+
+  cursor:pointer;
+}
+
+/* LEADERBOARD ROW */
+.leaderboardRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:14px;
+  margin-bottom:10px;
+
+  border-radius:16px;
+
+  background:rgba(255,255,255,0.08);
+
+  color:#ffffff !important;
+  font-weight:bold;
+
+  text-shadow:
+    0 0 8px rgba(0,0,0,.8);
+}
+
+/* ALL TEXT INSIDE ROW */
+.leaderboardRow *{
+  color:#ffffff !important;
+}
+
+/* GOLD TOP USER */
+.leaderboardRow.top{
+  box-shadow:
+    0 0 20px rgba(255,215,0,0.45);
+
+  border:1px solid rgba(255,215,0,0.5);
+
+  background:
+    rgba(255,215,0,0.12);
+}
+/* GOLD TOP USER */
+.leaderboardRow.top{
+  box-shadow:
+    0 0 20px rgba(255,215,0,0.45);
+
+  border:1px solid rgba(255,215,0,0.5);
+}
+/* 🔥 MATCH OVERLAY CHAT STYLE */
+
+.msgWrap{
+  display:flex;
+  margin-bottom:10px;
+}
+
+.message{
+  animation:chatPop 0.25s ease;
+}
+
+/* 🔥 HUGE EMOJIS */
+.bigChatEmoji{
+  font-size:120px;
+  line-height:1;
+  text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 🔥 MULTI EMOJIS */
+.multiEmoji{
+  font-size:60px;
+  line-height:1.2;
+}
+
+/* 🔥 POP EFFECT */
+@keyframes chatPop{
+
+  from{
+    transform:scale(0.9);
+    opacity:0;
+  }
+
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+
+}
+
+/* 🔥 IMAGE STYLE */
+.message img{
+
+  display:block;
+
+  margin-top:6px;
+
+  border-radius:10px;
+
+  max-width:100%;
+
+  height:auto;
+
+  max-height:300px;
+
+  object-fit:contain;
+
+}
+
+/* 🔥 MOBILE */
+@media (max-width:700px){
+
+  .message{
+    max-width:92% !important;
+  }
+
+}
+
+  .bigChatEmoji{
+    font-size:100px;
+  }
+
+  .multiEmoji{
+    font-size:48px;
+  }
+
+}
+/* =========================
+   🎂 BIRTHDAY OVERLAY
+========================= */
+
+#birthdayOverlay{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999999;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+}
+
+.birthdayCard{
+  width:min(90vw,500px);
+  background:
+    linear-gradient(
+      135deg,
+      #ff9a00,
+      #ff3cac
+    );
+
+  border-radius:30px;
+  padding:25px;
+  text-align:center;
+
+  animation:
+    birthdayPop .5s ease;
+}
+
+.birthdayTitle{
+  font-size:34px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.birthdayPerson{
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.birthdayImage{
+  width:220px;
+  max-width:90%;
+  border-radius:20px;
+  margin-bottom:15px;
+}
+
+.birthdayMessage{
+  font-size:22px;
+  margin-bottom:15px;
+}
+
+.birthdaySender{
+  font-size:18px;
+  opacity:.9;
+}
+
+@keyframes birthdayPop{
+
+  from{
+    transform:scale(.5);
+    opacity:0;
+  }
+
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+
+}
+</style>
+</head>
+
+<body>
+<div id="themeRoot">
+
+<div class="app">
+  <div id="login">
+    <div class="loginCard">
+      <img src="/logo.png" class="loginLogo">
+      <div class="micIcon">🎤</div>
+      <h2>Welcome to Karaoke Live!</h2>
+      <p>Pick a nickname to join the chat</p>
+      <input id="nameInput" placeholder="Enter nickname">
+      <button id="joinBtn">Join Chat 🎤</button>
+    </div>
+  </div>
+
+  <div id="chatContainer">
+<div id="messages"></div>
+<!-- ✅ ONLY KEEP THIS HEADER -->
+<div id="nowSingingBanner" style="
+position:fixed;
+top:50px;
+left:0;
+width:100%;
+background:red;
+color:white;
+text-align:center;
+padding:5px;
+font-weight:bold;
+z-index:999999;
+display:none;
+">
+🎤 NOW SINGING
+</div>
+<div class="header">
+
+  <!-- LEFT -->
+  <div class="headerTitle">
+    🎤 Dean's Live Karaoke Party
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="headerActions">    
+
+<!-- ☰ MORE FEATURES -->
+<div
+  id="moreFeaturesBtn"
+  class="menuActionBtn"
+  style="
+    color:#ffffff;
+    border:1px solid rgba(255,255,255,0.25);
+    background:linear-gradient(
+      135deg,
+      rgba(255,255,255,0.10),
+      rgba(40,40,40,0.40)
+    );
+  "
+>
+  ☰ <span>More</span>
+</div>
+   
+ <!-- 📲 INSTALL -->
+<button
+  id="installBtn"
+  class="menuActionBtn installBtn"
+  style="display:none;"
+>
+  📲 <span>Install</span>
+</button>
+<!-- 📲 SHARE -->
+<div
+  id="shareBtn"
+  class="menuActionBtn"
+  style="
+    color:#25D366;
+    border:1px solid rgba(37,211,102,0.5);
+    background:linear-gradient(
+      135deg,
+      rgba(37,211,102,0.15),
+      rgba(0,60,20,0.45)
+    );
+  "
+>
+  📲 <span>Share</span>
+</div>
+    
+    
+    <!-- 🚪 LOGOUT -->
+    <div
+  id="logoutBtn"
+  class="logoutBtn"
+>
+  🚪 <span>Logout</span>
+</div>
+  </div>
+
+</div>
+<!-- 🔥 DROPDOWN MENU (FIXED) -->
+<div id="menuDropdown">
+
+<div
+  id="downloadBtnDropdown"
+  class="dropdownBtn downloadStyle"
+  onclick="downloadLastPerformance()"
+>
+  ⬇ Download Performance
+</div>
+<div
+  id="browseBtnDropdown"
+  class="dropdownBtn browseStyle"
+  onclick="
+    document.getElementById('menuDropdown').style.display='none';
+    showPerformanceList();
+  "
+>
+  ▶ Browse Performances
+</div><div
+  id="dropdownVoteBtn"
+  class="dropdownBtn"
+  style="
+    color:#00ffcc;
+    border:1px solid rgba(0,255,200,.5);
+  "
+>
+  🗳️ Vote
+</div>
+
+<div
+  id="dropdownLeaderboardBtn"
+  class="dropdownBtn"
+  style="
+    color:#ffd700;
+    border:1px solid rgba(255,215,0,.5);
+  "
+>
+  🏆 Ranks
+</div>
+<div
+  id="accountBtnDropdown"
+  class="dropdownBtn"
+  style="
+    color:#00cfff;
+    border:1px solid rgba(0,200,255,.5);
+  "
+>
+  👤 Account
+</div>
+<!-- 🎨 APP THEME -->
+
+<div
+  id="themeBtnDropdown"
+  class="dropdownBtn"
+  style="
+    color:#ffffff;
+    border:1px solid rgba(255,255,255,.25);
+  "
+>
+  🎨 Change Background
+</div>
+
+<div
+  id="themePanel"
+  style="
+    display:none;
+    margin-top:10px;
+  "
+>
+
+  <div
+    class="dropdownBtn"
+    onclick="setTheme('neon')"
+  >
+    🌌 Neon Night
+  </div>
+
+  <div
+    class="dropdownBtn"
+    onclick="setTheme('business')"
+  >
+    💼 Business Dark
+  </div>
+
+  <div
+    class="dropdownBtn"
+    onclick="setTheme('modern')"
+  >
+    ✨ Modern Glass
+  </div>
+
+</div>
+<div
+  onclick="downloadLastPerformance()"
+  class="dropdownBtn downloadStyle"
+>
+  ⬇ Download Latest
+</div>
+</div> <!-- menuDropdown -->
+
+<!-- 🔥 RIGHT SIDE CONTROLS -->
+<div class="rightControls">
+ <!-- 📷 CAMERA -->
+<div class="controlBtn btn-camera" onclick="openCamera()">
+  <div class="btnInner">
+    <div class="btnIcon">📷</div>
+    <div class="btnLabel">Camera</div>
+  </div>
+</div>
+
+<!-- 📎 ATTACH -->
+<div class="controlBtn btn-attach" onclick="openFile()">
+  <div style="text-align:center; line-height:1;">
+    <div class="btnIcon">📎</div>
+    <div style="font-size:10px; opacity:0.8;">Attach</div>
+  </div>
+</div>
+<!-- 🎂 BIRTHDAY MODE -->
+<div
+  id="birthdayBtn"
+  class="controlBtn btn-birthday"
+  onclick="openBirthdayMode()"
+>
+  <div class="btnInner">
+    <div class="btnIcon">🎂</div>
+    <div class="btnLabel">Birthday</div>
+  </div>
+</div><!-- 😀 EMOJI -->
+<div class="controlBtn btn-emoji" onclick="toggleEmoji()">
+  <div style="text-align:center; line-height:1;">
+    <div class="btnIcon">😀</div>
+    <div style="font-size:10px; opacity:0.8;">Emoji</div>
+  </div>
+</div>
+
+<!-- 🧩 STICKERS -->
+<div class="controlBtn btn-sticker" onclick="toggleStickers()">
+  <div style="text-align:center; line-height:1;">
+    <div class="btnIcon">🧩</div>
+    <div style="font-size:10px; opacity:0.8;">Stickers</div>
+  </div>
+</div>
+<!-- ❤️ LIVE REACTIONS -->
+<div class="controlBtn btn-hearts" onclick="toggleReactions()">
+  <div style="text-align:center; line-height:1;">
+    <div class="btnIcon">❤️</div>
+    <div style="font-size:10px; opacity:0.8;">React</div>
+  </div>
+</div>
+
+
+</div> <!-- rightControls -->
+<script>
+// TEMP TEST — SAFE SCRIPT
+console.log("✅ Script is clean and closed properly");
+// =========================
+// 🔥 PERFORMANCE LIST HANDLER
+// =========================
+
+window.showPerformanceList = async function() {
+  const res = await fetch('/list-performances');
+  const files = await res.json();
+
+  const list = document.getElementById("performanceList");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  const closeBtn = document.createElement("div");
+  closeBtn.innerHTML = "✖ Close";
+  closeBtn.style.color = "#fff";
+  closeBtn.style.cursor = "pointer";
+  closeBtn.style.marginBottom = "8px";
+  closeBtn.onclick = () => {
+    list.style.display = "none";
+  };
+
+  list.appendChild(closeBtn);
+
+  list.style.display = "grid";
+  list.style.maxHeight = "300px";
+  list.style.overflowY = "auto";
+  list.style.gridTemplateColumns = "repeat(auto-fill, minmax(130px, 1fr))";
+  list.style.gap = "10px";
+
+  files.forEach(f => {
+
+    const div = document.createElement("div");
+    div.style.background = "#111";
+    div.style.padding = "6px";
+    div.style.borderRadius = "10px";
+    div.style.textAlign = "center";
+    div.style.cursor = "pointer";
+
+    const isVideo = f.resource_type === "video" || f.path.includes(".mp4");
+
+    if (isVideo) {
+      const vid = document.createElement("video");
+      vid.src = f.url || f.path;
+      vid.style.width = "100%";
+      vid.muted = true;
+      vid.loop = true;
+      vid.autoplay = true;
+
+      div.appendChild(vid);
+    } else {
+      const img = document.createElement("img");
+      img.src = f.url || f.path;
+      img.style.width = "100%";
+
+      div.appendChild(img);
+    }
+div.onclick = () => {
+
+  if(isVideo){
+
+    openVideoViewer({
+      name: f.name,
+      path: f.url || f.path,
+      id: f.id || f.name
+    });
+
+  }
+
+};
+    list.appendChild(div);
+
+  }); // ✅ closes forEach
+
+}; // ✅ closes function
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register(
+    "/service-worker.js"
+  );
+}
+</script>
+<!-- 🔥 EMOJI PANEL (REQUIRED) -->
+<div id="emojiPanel"></div>
+<!-- ❤️ REACTION PICKER -->
+<div id="reactionPanel" style="
+display:none;
+position:fixed;
+bottom:70px;
+right:90px;
+z-index:10000;
+
+background:#1b0033;
+padding:10px;
+border-radius:16px;
+
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+
+max-width:220px;
+box-shadow:0 0 20px rgba(0,0,0,0.6);
+"></div>
+<!-- 🔥 STICKER PANEL -->
+<div id="stickerPanel">
+
+  <!-- 🔥 SCROLL BUTTONS -->
+  <div id="stickerScrollControls">
+    <div id="scrollUp">▲</div>
+    <div id="scrollDown">▼</div>
+  </div>
+
+</div>
+
+<!-- 🔥 IMAGE PREVIEW (REQUIRED FOR UPLOAD) -->
+<div id="preview" style="display:none;"></div>
+<div id="imgPreviewPopup">
+  <img id="imgPreviewPopupImg">
+</div>
+<div id="typingIndicator" style="display:flex;align-items:center;gap:6px;"></div>
+<div id="newMsgIndicator" style="
+position:fixed;
+bottom:120px;
+left:50%;
+transform:translateX(-50%);
+background:#25D366;
+color:#fff;
+font-weight:bold;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
+padding:8px 14px;
+border-radius:20px;
+font-size:14px;
+display:none;
+z-index:99999;
+cursor:pointer;
+">
+⬇ New Messages
+</div>
+<!-- ✅ ADD THIS RIGHT HERE -->
+<div id="recordingIndicator" style="
+position:fixed;
+bottom:150px;
+left:calc(50% - 40px);
+background:red;
+color:#fff;
+padding:10px 18px;
+border-radius:20px;
+display:none;
+z-index:99999;
+font-size:14px;
+">
+🔴 Recording...
+</div>
+<!-- ✅ REPLY PREVIEW BAR -->
+<div id="replyPreview" onclick="scrollToReply()" style="
+display:none;
+position:fixed;
+bottom:70px;
+left:0;
+width:100%;
+background:#111;
+color:#fff;
+padding:8px 12px;
+font-size:14px;
+border-left:4px solid #00cfff;
+z-index:9999;
+">
+  <span id="replyText"></span>
+  <span onclick="cancelReply()" style="float:right;cursor:pointer;">✖</span>
+</div>
+<div class="inputBar">
+  <textarea id="text" placeholder="Type a message"></textarea>
+
+  <!-- 🎤 VOICE BUTTON -->
+  <span id="voiceBtn" class="whatsappMic">🎤</span>
+
+  <span class="iconBtn sendBtn" onclick="sendMessage()">➤</span>
+</div>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" style="display:none">
+  <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+</script>
+
+<script src="/chat-core.js"></script>
+<script src="/reactions.js"></script>
+<script src="/voting.js"></script>
+<script>
+"use strict";
+window.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("touchstart", ()=>{}, {passive:true});
+// 🔥 HARD RESET IMAGE VIEWER ON LOAD
+const viewer = document.getElementById("imgViewer");
+const viewerImg = document.getElementById("imgViewerImg");
+// =========================
+// 🔥 PERMISSION SYSTEM
+// =========================
+
+function canUse(action){
+  if(action === "download") return performanceAccess?.allowDownload;
+  if(action === "browse") return performanceAccess?.allowBrowse;
+  if(action === "record") return performanceAccess?.allowRecording; // ✅ ADD
+  return false;
+}
+const videoViewer = document.getElementById("videoViewer"); 
+// ✅ ADD THIS BLOCK RIGHT HERE (DO NOT MOVE)
+const browsePerformancesBtn =
+  document.getElementById("browsePerformancesBtn");
+
+if (browsePerformancesBtn) {
+
+  browsePerformancesBtn.onclick = async (e) => {
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!canUse("browse")) {
+      alert("Browsing disabled");
+      return;
+    }
+
+    const list =
+      document.getElementById("performanceList");
+
+    const alreadyOpen =
+      list && list.style.display === "grid";
+
+    closeAllPopups?.();
+
+    if (alreadyOpen) return;
+
+    await showPerformanceList();
+
+    window.activePopup = "performances";
+  };
+}
+
+
+  const imgViewer = document.getElementById("imgViewer");
+  const imgViewerImg = document.getElementById("imgViewerImg");
+
+  if(!imgViewer || !imgViewerImg) return;
+
+  // OPEN
+  document.addEventListener("click", function(e){
+    if(e.target.tagName === "IMG" && e.target.classList.contains("msgImg")){
+      imgViewer.style.display = "flex";
+// 🔥 ENSURE IMAGE FULLY VISIBLE
+imgViewer.scrollTop = 0;
+setTimeout(()=>{
+  imgViewer.style.opacity = "1";
+  imgViewer.style.transform = "translateY(0)";
+},10);
+imgViewerImg.src = e.target.src;
+    }
+  });
+
+  // CLOSE
+  imgViewer.addEventListener("click", ()=>{
+    imgViewer.style.opacity = "0";
+imgViewer.style.transform = "translateY(-10px)";
+setTimeout(()=>{
+  imgViewer.style.display = "none";
+  imgViewerImg.src = "";
+},250);
+  });
+// =========================
+// 🔥 WHATSAPP SWIPE TO CLOSE IMAGE VIEWER
+// =========================
+
+let startY = 0;
+
+// 🔥 USE EXISTING imgViewer (DO NOT REDECLARE)
+
+if (imgViewer) {
+
+  imgViewer.addEventListener("touchstart", (e) => {
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  imgViewer.addEventListener("touchmove", (e) => {
+    const moveY = e.touches[0].clientY;
+
+    if (moveY - startY > 80) {
+
+      imgViewer.style.opacity = "0";
+      imgViewer.style.transform = "translateY(50px)";
+
+      setTimeout(() => {
+        imgViewer.style.display = "none";
+
+        const img = document.getElementById("imgViewerImg");
+        if (img) img.src = "";
+      }, 200);
+    }
+  }, { passive: true });
+
+}
+
+let currentVideo = null;
+// =========================
+// 🎬 VIDEO VIEWER ELEMENTS
+// =========================
+
+function getVideoElements(){
+
+  return {
+    videoViewer:
+      document.getElementById("videoViewer"),
+
+    videoPlayer:
+      document.getElementById("videoPlayer"),
+
+    videoBackBtn:
+      document.getElementById("videoBackBtn"),
+
+    videoCloseBtn:
+      document.getElementById("videoCloseBtn"),
+
+    videoDownloadBtn:
+      document.getElementById("videoDownloadBtn"),
+
+    videoFullscreenBtn:
+      document.getElementById("videoFullscreenBtn")
+  };
+
+}
+function setupVideoControls(){
+
+  const {
+    videoPlayer,
+    videoBackBtn,
+    videoCloseBtn,
+    videoDownloadBtn,
+    videoFullscreenBtn
+  } = getVideoElements();
+
+  if(!videoPlayer) return;
+
+  // ▶ PLAY / PAUSE
+  videoPlayer.addEventListener("click", () => {
+
+    if(videoPlayer.paused){
+      videoPlayer.play().catch(()=>{});
+    } else {
+      videoPlayer.pause();
+    }
+
+  });
+
+  // ⬅ BACK BUTTON
+  if(videoBackBtn){
+
+    videoBackBtn.onclick = ()=>{
+
+      window.closeVideoViewer();
+
+    };
+
+  }
+
+  // ✖ CLOSE BUTTON
+  if(videoCloseBtn){
+
+    videoCloseBtn.onclick = ()=>{
+
+      window.closeVideoViewer();
+
+    };
+
+  }
+
+  // ⛶ FULLSCREEN
+  if(videoFullscreenBtn){
+
+    videoFullscreenBtn.onclick = ()=>{
+
+      if(videoPlayer.requestFullscreen){
+        videoPlayer.requestFullscreen();
+      }
+
+    };
+
+  }
+
+  // ⬇ DOWNLOAD
+  if(videoDownloadBtn){
+
+    videoDownloadBtn.onclick = ()=>{
+
+      if(!currentVideo) return;
+
+      const a = document.createElement("a");
+
+      a.href = currentVideo.path;
+
+      a.download =
+        currentVideo.name || "video.mp4";
+
+      document.body.appendChild(a);
+
+      a.click();
+
+      document.body.removeChild(a);
+
+    };
+
+  }
+
+}
+
+// ✅ RUN VIDEO CONTROLS
+setupVideoControls();
+
+window.openVideoViewer = function(file){
+
+  const {
+    videoViewer,
+    videoPlayer
+  } = getVideoElements();
+  // remove previous viewer FIRST
+  if (currentVideo && currentVideo.name !== file.name) {
+    socket.emit("watch video", null);
+  }
+
+  // set new
+  currentVideo = file;
+
+
+  
+
+  // open player
+  videoViewer.style.display = "flex";
+  videoPlayer.src = file.path;
+  videoPlayer.play().catch(()=>{});
+
+  document.getElementById("performanceList").style.display = "none";
+}
+
+window.closeVideoViewer = function(){
+
+  const {
+    videoViewer,
+    videoPlayer
+  } = getVideoElements();
+
+  if (currentVideo) {
+    socket.emit("watch video", null);
+    currentVideo = null;
+  }
+
+  videoPlayer.pause();
+  videoPlayer.currentTime = 0;
+  videoPlayer.src = "";
+  videoViewer.style.display = "none";
+}
+// 📷 CAMERA
+window.openCamera = function(){
+
+  const cameraInput =
+    document.getElementById("cameraInput");
+
+  if(cameraInput){
+    cameraInput.click();
+  }
+
+};
+
+// 📎 FILE PICKER
+window.openFile = function(){
+
+  const fileInput =
+    document.getElementById("fileInput");
+
+  if(fileInput){
+    fileInput.click();
+  }
+
+};
+
+// ⬇ DOWNLOAD PERFORMANCE
+window.downloadLastPerformance = function(){
+
+  if(!currentVideo){
+    alert("No performance selected");
+    return;
+  }
+
+  const a = document.createElement("a");
+
+  a.href = currentVideo.path;
+
+  a.download =
+    currentVideo.name || "performance.mp4";
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  document.body.removeChild(a);
+
+};
+function cleanMessage(msg){
+  const badWords = ["badword1","badword2","ass","shit","fuck"];
+
+  let clean = msg;
+
+  badWords.forEach(w=>{
+    const regex = new RegExp(`\\b${w}\\b`,"gi");
+    clean = clean.replace(regex,"****");
+  });
+
+  return clean;
+}
+const msgSound = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+let performanceAccess = {
+  allowDownload: true,
+  allowBrowse: true,
+  allowRecording: true
+};
+
+socket.on("viewer count", ({ videoId, count }) => {
+  document.querySelectorAll("[data-video-id]").forEach(el => {
+    if (el.dataset.videoId === videoId && el.viewerLabel) {
+      el.viewerLabel.textContent = `👁 ${count} watching`;
+    }
+  });
+});
+socket.on("now singing", (data) => {
+  const banner = document.getElementById("nowSingingBanner");
+
+  banner.style.display = "block";
+  banner.innerHTML = `🎤 NOW SINGING: ${data.user}`;
+
+  // optional auto hide
+  setTimeout(() => {
+    banner.style.display = "none";
+  }, 15000);
+});
+// 🔥 AUTO REFRESH PERFORMANCE LIST WHEN NEW VIDEO UPLOADED
+let refreshingPerformances = false;
+
+socket.on("new performance", async () => {
+
+  const list =
+    document.getElementById("performanceList");
+
+  if(!list) return;
+
+  if(list.style.display !== "grid") return;
+
+  if(refreshingPerformances) return;
+
+  refreshingPerformances = true;
+
+  try{
+
+    await showPerformanceList();
+
+  }catch(err){
+
+    console.error(err);
+
+  }
+
+  setTimeout(()=>{
+    refreshingPerformances = false;
+  },500);
+
+});
+// 🔥 AUTO RECONNECT UI FIX
+socket.on("connect",()=>{
+  socket.emit("request settings");
+});
+// =========================
+// 🔥 FIX MOBILE RECORDING GLITCH (CRITICAL)
+// =========================
+document.addEventListener("visibilitychange", () => {
+  if(document.hidden && isRecording && mediaRecorder){
+    clearInterval(recordingInterval);
+    mediaRecorder.stop();
+    isRecording = false;
+    recordingIndicator.style.display = "none";
+  }
+});
+let lastPerformanceCount = 0;
+
+
+// DOM elements
+const nameInput =
+  document.getElementById("nameInput");
+
+const login =
+  document.getElementById("login");
+
+const chatContainer =
+  document.getElementById("chatContainer");
+
+const messages =
+  document.getElementById("messages");
+messages.addEventListener("mousedown",()=>{
+
+  console.log(
+    "🖱 MESSAGES CLICKED"
+  );
+
+});
+
+messages.addEventListener("wheel",()=>{
+
+  console.log(
+    "🖱 WHEEL DETECTED"
+  );
+
+});
+if(messages){
+
+  messages.style.overflowY =
+    "auto";
+
+  messages.style.touchAction =
+    "pan-y";
+
+}if(messages){
+
+  messages.addEventListener("click",(e)=>{
+
+    if(
+      e.target.tagName === "IMG" &&
+      e.target.classList.contains("msgImg")
+    ){
+
+      const popup =
+        document.getElementById("imgPreviewPopup");
+
+      const popupImg =
+        document.getElementById("imgPreviewPopupImg");
+
+      popup.style.display = "flex";
+
+      popupImg.src = e.target.src;
+
+      setTimeout(()=>{
+        popup.style.display = "none";
+      },2000);
+
+    }
+
+  });
+
+}
+
+const voiceBtn =
+
+  document.getElementById("voiceBtn");
+console.log(
+  "VOICE BUTTON:",
+  voiceBtn
+);
+let mediaRecorder;
+let replyingTo = null;
+
+
+let selectedMessage = null;   // 🔥 ADD HERE (UNDER replyingTo)
+
+function showActions(msg, data){
+  selectedMessage = data;
+
+  const box = document.getElementById("messageActions");
+  box.style.display = "block";
+
+  setTimeout(()=> box.style.display = "none", 3000);
+}
+let audioChunks = [];
+let isRecording = false;
+let recordingInterval;
+let recordingTime = 0;
+
+// 🔥 CAPTURE AUDIO DATA (CRITICAL FIX)
+function setupRecorder(stream){
+  mediaRecorder = new MediaRecorder(stream, {
+    mimeType: "audio/webm;codecs=opus"
+  });
+
+  mediaRecorder.ondataavailable = (e)=>{
+    if(e.data.size > 0){
+      audioChunks.push(e.data);
+    }
+  };
+
+  mediaRecorder.onstop = ()=>{
+    if(!audioChunks.length) return;
+
+    const blob = new Blob(audioChunks, { type: "audio/webm" });
+    audioChunks = [];
+
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+
+    reader.onloadend = ()=>{
+      socket.emit("chat message",{
+  name:userName,
+  message:"",
+  audio: reader.result,
+  reply: replyingTo
+});
+    };
+  };
+}
+// =========================
+// 🎤 INITIALIZE MICROPHONE
+// =========================
+
+navigator.mediaDevices
+  .getUserMedia({
+    audio:true
+  })
+  .then(setupRecorder)
+  .catch(err=>{
+
+  console.error(
+    "Microphone access failed:",
+    err
+  );
+
+  alert(
+    "Microphone error: " +
+    err.message
+  );
+
+});
+// 🎤 START
+function startRecording(){
+
+  // 🚫 BLOCK FROM CONTROL PANEL
+  if(!canUse("record")){
+    alert("Recording disabled");
+    return;
+  }
+
+  if(!mediaRecorder) return;
+
+  audioChunks = [];
+  recordingTime = 0;
+voiceBtn.classList.add("recording");
+  mediaRecorder.start();
+  isRecording = true;
+
+  recordingIndicator.style.display = "block";
+  recordingIndicator.innerHTML = "🔴 Recording... 0s";
+
+  recordingInterval = setInterval(()=>{
+    recordingTime++;
+    recordingIndicator.innerHTML = `🔴 Recording... ${recordingTime}s`;
+  },1000);
+}
+
+// 🛑 STOP
+function stopRecording(){
+  if(!mediaRecorder || !isRecording) return;
+
+  clearInterval(recordingInterval);
+voiceBtn.classList.remove("recording");
+  isRecording = false;
+  recordingIndicator.style.display = "none";
+
+  mediaRecorder.stop();
+}
+
+/// 📱 MOBILE + DESKTOP RECORDING FIX
+let touchRecording = false;
+
+// 📱 TOUCH
+voiceBtn.addEventListener("touchstart", ()=>{
+
+  touchRecording = true;
+
+  startRecording();
+
+}, { passive:true });
+
+voiceBtn.addEventListener("touchend", ()=>{
+
+  stopRecording();
+
+  // 🔥 prevent fake mouse events after touch
+  setTimeout(()=>{
+    touchRecording = false;
+  },300);
+
+}, { passive:true });
+
+// 🖱 DESKTOP
+voiceBtn.addEventListener("mousedown", ()=>{
+
+  // 🔥 ignore fake mouse events from mobile
+  if(touchRecording) return;
+
+  startRecording();
+});
+
+voiceBtn.addEventListener("mouseup", ()=>{
+
+  if(touchRecording) return;
+
+  stopRecording();
+});
+
+voiceBtn.addEventListener("mouseleave", ()=>{
+
+  if(touchRecording) return;
+
+  stopRecording();
+});
+
+const recordingIndicator = document.getElementById("recordingIndicator");
+
+const fileInput = document.getElementById("fileInput");
+const cameraInput = document.getElementById("cameraInput");
+const typingIndicator = document.getElementById("typingIndicator");
+// =========================
+// 🔥 TYPING INDICATOR SYSTEM
+// =========================
+
+socket.on("typing users", (users) => {
+
+  if (!typingIndicator) return;
+
+  // remove yourself
+  users = users.filter(
+    u => u !== window.userName
+  );
+
+  // nobody typing
+  if (!users.length) {
+
+    typingIndicator.innerHTML = "";
+    typingIndicator.style.display = "none";
+
+    return;
+  }
+
+  // single user
+  if (users.length === 1) {
+
+    typingIndicator.innerHTML = `
+      <span>${users[0]} is typing</span>
+
+      <div class="typingDots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    `;
+
+  } else {
+
+    typingIndicator.innerHTML = `
+      <span>${users.length} people typing</span>
+
+      <div class="typingDots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    `;
+  }
+
+  typingIndicator.style.display = "flex";
+
+});
+// =========================
+// 📷 IMAGE UPLOAD HANDLER
+// =========================
+
+function handleImageSelect(e){
+
+  const file = e.target.files[0];
+console.log(
+  "SELECTED FILE:",
+  file
+);
+  if(!file) return;
+console.log(
+  "IMAGE SIZE:",
+  Math.round(file.size / 1024),
+  "KB"
+);
+
+  const preview =
+    document.getElementById("preview");
+
+  if(preview){
+
+    preview.innerHTML =
+      `<img src="${URL.createObjectURL(file)}"
+       style="max-width:150px;border-radius:10px;">`;
+
+    preview.style.display = "block";
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = ()=>{
+
+    socket.emit("chat message",{
+      name: userName,
+      image: reader.result,
+      reply: replyingTo || null
+    });
+
+    if(preview){
+      preview.style.display = "none";
+      preview.innerHTML = "";
+    }
+
+  };
+
+  reader.readAsDataURL(file);
+
+}
+
+// FILE PICKER
+if(fileInput){
+  fileInput.addEventListener(
+    "change",
+    handleImageSelect
+  );
+}
+
+// CAMERA
+if(cameraInput){
+  cameraInput.addEventListener(
+    "change",
+    handleImageSelect
+  );
+}
+const joinBtn = document.getElementById("joinBtn");
+const emojiPanel = document.getElementById("emojiPanel");
+const stickerPanel = document.getElementById("stickerPanel");
+const reactionPanel = document.getElementById("reactionPanel");
+const menuBtn = document.getElementById("menuBtn");
+const openVoteBtn =
+ document.getElementById("dropdownVoteBtn");
+
+const openLeaderboardBtn =
+
+  document.getElementById("dropdownLeaderboardBtn");
+console.log(
+  "VOTE BTN:",
+  openVoteBtn
+);
+
+console.log(
+  "LEADERBOARD BTN:",
+  openLeaderboardBtn
+);
+// =========================
+// 🗳️ VOTING DOM
+// =========================
+
+
+const votePopup =
+  document.getElementById("votePopup");
+const contestantList =
+  document.getElementById("contestantList");
+
+const closeVotePopupBtn =
+  document.getElementById("closeVotePopupBtn");
+
+const leaderboardPopup =
+  document.getElementById("leaderboardPopup");
+
+const leaderboardList =
+  document.getElementById("leaderboardList");
+
+const closeLeaderboardBtn =
+  document.getElementById("closeLeaderboardBtn");
+// 🔴 BADGE
+let menuBadge = document.createElement("span");
+menuBadge.innerText = " 🔴";
+menuBadge.style.display = "none";
+if(menuBtn){
+  menuBtn.appendChild(menuBadge);
+}
+const menuDropdown = document.getElementById("menuDropdown");
+// =========================
+// 🔥 GLOBAL UI STATE LOCK
+// =========================
+
+let activePopup = null;
+
+function closeAllPopups(){
+
+  // MENU
+  if(menuDropdown){
+    menuDropdown.style.display = "none";
+  }
+
+  // PERFORMANCE LIST
+  const performanceList =
+    document.getElementById("performanceList");
+
+  if(performanceList){
+    performanceList.style.display = "none";
+  }
+
+  // VOTE
+  if(votePopup){
+  votePopup.classList.remove("show");
+}
+
+  // LEADERBOARD
+  if(leaderboardPopup){
+  leaderboardPopup.classList.remove("show");
+}
+
+  // EMOJIS
+  if(emojiPanel){
+    emojiPanel.style.display = "none";
+  }
+
+  // STICKERS
+  if(stickerPanel){
+    stickerPanel.style.display = "none";
+  }
+
+  // REACTIONS
+  if(reactionPanel){
+    reactionPanel.style.display = "none";
+  }
+
+  activePopup = null;
+}
+// TOGGLE MENU (SAFE)
+if(menuBtn){
+
+  menuBtn.onclick = (e) => {
+
+    e.stopPropagation();
+
+    const isOpen =
+      menuDropdown.style.display === "block";
+
+    closeAllPopups();
+
+    if(isOpen) return;
+
+    menuDropdown.style.display = "block";
+
+    activePopup = "menu";
+
+  };
+
+}
+// PREVENT CLICK INSIDE MENU FROM CLOSING
+if(menuDropdown){
+  menuDropdown.onclick = (e) => {
+    e.stopPropagation();
+  };
+}
+// =========================
+// 🔥 CLOSE POPUPS ON OUTSIDE CLICK
+// =========================
+
+// =========================
+// 🔥 SAFE OUTSIDE CLICK SYSTEM
+// =========================
+
+document.addEventListener("click", (e) => {
+
+  // IGNORE MENU BUTTON
+  if(e.target.closest("#menuBtn")) return;
+
+  // IGNORE MENU
+  if(e.target.closest("#menuDropdown")) return;
+
+  // IGNORE POPUPS
+  if(e.target.closest(".popupCard")) return;
+
+  // IGNORE PERFORMANCE LIST
+  if(e.target.closest("#performanceList")) return;
+
+  // IGNORE CONTROL BUTTONS
+  if(e.target.closest(".controlBtn")) return;
+
+  // IGNORE HEADER ACTION BUTTONS
+  if(e.target.closest(".menuActionBtn")) return;
+
+  // IGNORE LOGOUT BUTTON
+  if(e.target.closest("#logoutBtn")) return;
+
+  // IGNORE VIDEO VIEWER
+  if(e.target.closest("#videoViewer")) return;
+
+  // IGNORE IMAGE VIEWER
+  if(e.target.closest("#imgViewer")) return;
+
+  // OTHERWISE CLOSE
+  closeAllPopups();
+
+});
+
+// =========================
+// 🗳️ CLOSE POPUPS
+// =========================
+
+if(closeVotePopupBtn){
+  closeVotePopupBtn.onclick = ()=>{
+    votePopup.style.display = "none";
+  };
+}
+
+if(closeLeaderboardBtn){
+  closeLeaderboardBtn.onclick = ()=>{
+    leaderboardPopup.style.display = "none";
+  };
+}
+function openPanel(panel){
+  panel.style.display = "flex";   // ✅ FIX (was block before)
+  panel.scrollTop = 0;
+}
+// =========================
+// 🗳️ OPEN VOTING
+// =========================
+
+if(openVoteBtn){
+
+  openVoteBtn.onclick = (e)=>{
+
+    e.stopPropagation();
+
+    console.log(
+      "🔥 BUTTON CLICKED votingOpen =",
+      window.votingOpen
+    );
+
+    if(!window.votingOpen){
+      alert("Voting not open yet");
+      return;
+    }
+
+    if(activePopup === "vote"){
+      closeAllPopups();
+      return;
+    }
+
+    closeAllPopups();
+
+    votePopup.style.display = "flex";
+    votePopup.classList.add("show");
+
+    activePopup = "vote";
+
+    console.log(
+      "🎤 RENDERING CONTESTANTS:",
+      window.contestants
+    );
+
+    renderContestants();
+
+  };
+
+}
+// =========================
+// 🏆 OPEN LEADERBOARD
+// =========================
+
+if(openLeaderboardBtn){
+
+  openLeaderboardBtn.onclick = (e) => {
+
+    e.stopPropagation();
+    const alreadyOpen =
+      activePopup === "leaderboard";
+
+    closeAllPopups();
+
+    if(alreadyOpen) return;
+
+    leaderboardPopup.style.display = "flex";
+    leaderboardPopup.classList.add("show");
+
+    activePopup = "leaderboard";
+
+  };
+
+}
+let userScrolledUp = false;
+
+if (messages) {
+
+  messages.addEventListener("scroll", () => {
+
+    const threshold = 120;
+
+    userScrolledUp =
+      messages.scrollTop + messages.clientHeight <
+      messages.scrollHeight - threshold;
+
+  });
+
+}
+
+const newMsgIndicator = document.getElementById("newMsgIndicator");
+
+if (newMsgIndicator) {
+function scrollToBottom(){
+
+  const chat =
+    document.getElementById("messages") ||
+    document.getElementById("chatMessages") ||
+    document.getElementById("chat");
+
+  if(!chat) return;
+
+  chat.scrollTop =
+    chat.scrollHeight;
+
+}
+  newMsgIndicator.onclick = () => {
+
+  scrollToBottom();
+  newMsgIndicator.style.display = "none";
+
+};
+
+}
+  
+  
+// 🔥 LOAD EMOJIS
+const emojis = ["😀","😂","😍","🔥","👏","🎤","💯","🥳","❤️","👍"];
+
+emojiPanel.innerHTML = "";
+
+emojis.forEach(e=>{
+  const span = document.createElement("span");
+  span.textContent = e;
+
+  // 🔥 MOBILE SAFE CLICK
+  span.addEventListener("click", () => {
+  insertEmoji(e);
+
+  // 🔥 CLOSE EMOJI PANEL
+  emojiPanel.style.display = "none";
+
+  // 🔥 CLOSE REACTION PANEL (CRITICAL FIX)
+  if (typeof reactionPanel !== "undefined" && reactionPanel) {
+    reactionPanel.style.display = "none";
+  }
+});
+
+  emojiPanel.appendChild(span);
+});
+
+window.insertEmoji = function(e){
+  if(!userName){
+    alert("Join chat first");
+    return;
+  }
+
+  try{
+    socket.emit("chat message",{
+      name: userName,
+      message: e,
+      image: null,
+      color: userColors[userName] || null
+    });
+  }catch(err){
+    console.error("Emoji send failed:", err);
+  }
+
+  // 🔥 FORCE CLOSE ALL PANELS
+  emojiPanel.style.display = "none";
+
+  if (typeof reactionPanel !== "undefined" && reactionPanel) {
+    reactionPanel.style.display = "none";
+  }
+};
+
+// =========================
+// 🗳️ VOTING SYSTEM
+// =========================
+const text = document.getElementById("text");
+
+let typingTimer = null;
+text.addEventListener("input",()=>{
+  if(!userName) return;
+
+  socket.emit("typing", userName);
+
+  clearTimeout(typingTimer);
+
+  typingTimer = setTimeout(()=>{
+    socket.emit("stop typing");
+  },1200);
+});
+const userColors = {};
+const colorClasses = [
+  "linear-gradient(135deg,#ff416c,#ff4b2b)",
+  "linear-gradient(135deg,#ff9a00,#ff6a00)",
+  "linear-gradient(135deg,#f7971e,#ffd200)",
+  "linear-gradient(135deg,#00c6ff,#0072ff)",
+  "linear-gradient(135deg,#00f260,#0575e6)",
+  "linear-gradient(135deg,#43e97b,#38f9d7)",
+  "linear-gradient(135deg,#fa709a,#fee140)",
+  "linear-gradient(135deg,#30cfd0,#330867)"
+];
+// =========================
+// 🔥 USER COLOR HANDLING
+// =========================
+function getUserColor(name) {
+    if (!userColors[name]) {
+        const hue = Math.floor(Math.random() * 360);
+        userColors[name] = `hsla(${hue}, 70%, 60%, 0.85)`;
+    }
+    return userColors[name];
+}
+
+// =========================
+// 🔥 START CHAT FUNCTION
+// =========================
+
+window.startChat = function(){
+window.userName = nameInput.value.trim();
+
+socket.emit("join", window.userName);
+
+  if(!window.userName){
+    alert("Enter nickname");
+    return;
+  }
+
+  login.style.display = "none";
+
+  chatContainer.style.display = "flex";
+
+  document.querySelector(".inputBar").style.display = "flex";
+
+  console.log("✅ CHAT OPENED");
+
+}
+
+if(joinBtn){
+  joinBtn.onclick = window.startChat;
+}
+let overlaySettings = {
+  avatarSize: 40,
+  fontSize:18,
+  chatFontSize:18,
+  bubbleRadius:20,
+  opacity:0.75,
+  fontColor:"#ffffff"
+};
+overlaySettings = {
+  avatarSize: 40,
+  fontSize:18,
+
+  chatFontSize:18,
+
+  chatFontFamily:
+  "system-ui",
+
+  bubbleRadius:20,
+  opacity:0.75,
+  fontColor:"#ffffff"
+};
+/* 🔥 LIVE SETTINGS LISTENER (CRITICAL FIX) */
+socket.on("settings update",(s)=>{
+console.count(
+  "SETTINGS UPDATE RECEIVED"
+);
+console.log("SETTINGS RECEIVED:", s);
+
+  overlaySettings = {...overlaySettings, ...s};
+
+  // ✅ APPLY CHAT WIDTH
+  if(messages){
+
+  messages.style.width =
+    (s.chatWidth || 100) + "%";
+
+  messages.style.maxWidth =
+    (s.chatWidth || 100) + "%";
+
+}
+
+  // ✅ APPLY CHAT OPACITY (BACKGROUND FEEL)
+  messages.style.opacity = s.opacity;
+
+  // ✅ APPLY FONT COLOR
+  messages.style.color = s.fontColor;
+
+  // ✅ UPDATE ALL EXISTING MESSAGES
+  const allMessages =
+  document.querySelectorAll(".message");
+
+console.log(
+  "MESSAGE COUNT:",
+  allMessages.length
+);
+
+allMessages.forEach(msg=>{
+
+    msg.style.fontSize =
+      s.chatFontSize + "px";
+msg.style.fontFamily =
+  s.chatFontFamily ||
+  "system-ui";
+
+    msg.style.borderRadius =
+      s.bubbleRadius + "px";
+
+    msg.style.color =
+      s.fontColor;
+
+    console.log(
+      "FONT APPLIED TO MESSAGE:",
+      msg.style.fontSize
+    );
+
+    // ✅ IMAGE SIZE LIVE
+    const img = msg.querySelector("img");
+    if(img){
+      img.style.maxWidth = s.chatImageSize + "px";
+    }
+  });
+
+});
+/* =========================
+   🎂 BIRTHDAY MODE STATUS
+========================= */
+document.addEventListener("DOMContentLoaded",()=>{
+
+  const overlay =
+    document.getElementById("birthdayOverlay");
+
+  if(!overlay) return;
+
+  function closeBirthdayOverlay(){
+
+    overlay.style.display = "none";
+
+    if(birthdayTimer){
+      clearTimeout(birthdayTimer);
+    }
+
+  }
+
+  // 🎂 TAP TO CLOSE
+  overlay.addEventListener(
+    "click",
+    closeBirthdayOverlay
+  );
+
+  // 📱 SWIPE TO CLOSE
+  let startY = 0;
+
+  overlay.addEventListener("touchstart",(e)=>{
+
+    startY = e.touches[0].clientY;
+
+  },{ passive:true });
+
+  overlay.addEventListener("touchend",(e)=>{
+
+    const endY =
+      e.changedTouches[0].clientY;
+
+    if(
+      Math.abs(endY - startY) > 60
+    ){
+
+      closeBirthdayOverlay();
+
+    }
+
+  },{ passive:true });
+
+});
+let birthdayTimer = null;
+let birthdayModeEnabled = true;
+socket.on(
+  "birthday mode update",
+  (data)=>{
+
+    console.log(
+      "🎂 BIRTHDAY UPDATE RECEIVED:",
+      data
+    );
+
+    birthdayModeEnabled =
+      data?.enabled !== false;
+
+    const btn =
+      document.getElementById(
+        "birthdayBtn"
+      );
+
+    console.log(
+      "🎂 BUTTON FOUND:",
+      btn
+    );
+
+    if(!btn) return;
+
+    btn.style.display =
+      birthdayModeEnabled
+        ? "flex"
+        : "none";
+
+    console.log(
+      "🎂 BUTTON DISPLAY:",
+      btn.style.display
+    );
+
+    const modal =
+      document.getElementById(
+        "birthdayModal"
+      );
+
+    if(
+      !birthdayModeEnabled &&
+      modal
+    ){
+      modal.style.display =
+        "none";
+    }
+
+});
+// 🔥 SOCKET LISTENER FOR PERFORMANCE ACCESS
+/* ========================= */
+/* 🔥 PERFORMANCE LIST FIXES 🔥 */
+/* ========================= */
+
+
+// 🔥 CLOSE PERFORMANCE LIST WHEN MENU CLICKED AGAIN
+
+// =========================
+// 🔥 APPLY PERFORMANCE ACCESS TO UI
+// =========================
+function updatePerformanceUI(){
+  const downloadBtn = document.querySelector('[onclick="downloadLastPerformance()"]');
+  const browseBtn = document.getElementById("browsePerformancesBtn");
+
+  if(downloadBtn){
+    downloadBtn.style.opacity = performanceAccess.allowDownload ? "1" : "0.3";
+    downloadBtn.style.pointerEvents = performanceAccess.allowDownload ? "auto" : "none";
+  }
+
+  if(browseBtn){
+    browseBtn.style.opacity = performanceAccess.allowBrowse ? "1" : "0.3";
+    browseBtn.style.pointerEvents = performanceAccess.allowBrowse ? "auto" : "none";
+  }
+}
+
+socket.on("performance access", (data) => {
+
+  performanceAccess = {
+    allowDownload: data.allowDownload ?? true,
+    allowBrowse: data.allowBrowse ?? true,
+    allowRecording: data.allowRecording ?? true
+  };
+
+  const buttons = [
+    document.getElementById("downloadBtn"),
+    document.querySelector('[onclick="downloadLastPerformance()"]'),
+    document.getElementById("browseBtn"),
+    document.getElementById("browsePerformancesBtn"),
+    document.getElementById("voiceBtn")
+  ];
+
+  buttons.forEach(btn => {
+
+    if (!btn) return;
+
+    let type = "browse";
+
+    // 🎤 RECORD
+    if (btn.id === "voiceBtn") {
+      type = "record";
+    }
+
+    // ⬇ DOWNLOAD
+    if (
+      btn.id?.toLowerCase().includes("download") ||
+      (btn.getAttribute("onclick") || "").includes("download")
+    ) {
+      type = "download";
+    }
+
+    const allowed = canUse(type);
+
+    btn.style.display = "flex";
+    btn.style.opacity = allowed ? "1" : "0.4";
+    btn.style.filter = allowed ? "none" : "grayscale(1)";
+    btn.style.pointerEvents =
+  allowed ? "auto" : "none";
+
+  });
+
+});
+
+// -------------------
+// OTHER FUNCTIONS (SIGN-IN, CHAT, EMOJI, STICKERS, UPLOAD, MESSAGES)
+// -------------------
+
+window.sendMessage = function(){
+
+  if(!window.userName){
+    alert("Join chat first");
+    return;
+  }
+
+  const textBox =
+    document.getElementById("text");
+
+  if(!textBox) return;
+
+  const msg =
+    textBox.value.trim();
+
+  if(!msg) return;
+
+  try{
+
+    socket.emit("chat message", {
+      name: window.userName,
+      message: msg,
+      reply: replyingTo || null
+    });
+
+    textBox.value = "";
+
+  }catch(err){
+
+    console.error("Send failed:", err);
+
+  }
+
+};
+function formatChatMessage(msg){
+
+  if(!msg) return "";
+
+  const onlyEmoji =
+    /^[\p{Emoji}\s]+$/u.test(msg.trim());
+
+  if(onlyEmoji){
+
+    const count =
+      [...msg.trim()].length;
+
+    if(count === 1){
+
+      return `
+        <div class="bigChatEmoji">
+          ${msg}
+        </div>
+      `;
+    }
+
+    return `
+      <div class="multiEmoji">
+        ${msg}
+      </div>
+    `;
+  }
+
+  return msg.replace(/\n/g,"<br>");
+}
+
+function hashCode(str){
+
+  str = String(str || "");
+
+  let hash = 0;
+
+  for(let i=0;i<str.length;i++){
+
+    hash =
+      ((hash<<5)-hash) +
+      str.charCodeAt(i);
+
+    hash |= 0;
+  }
+
+  return hash;
+
+}
+function getOverlayStyleColor(name){
+
+  if(!userColors[name]){
+
+    const index =
+      Math.abs(hashCode(name))
+      % colorClasses.length;
+
+    userColors[name] =
+      colorClasses[index];
+  }
+
+  return userColors[name];
+}
+
+function addMessage(data){
+
+  const messages =
+    document.getElementById("messages");
+
+  if(!messages) return;
+
+  // 🔥 WRAPPER
+  const wrap =
+    document.createElement("div");
+
+  wrap.className = "msgWrap";
+
+  // 🔥 BUBBLE
+  const msg =
+    document.createElement("div");
+
+  msg.className = "message";
+msg.style.fontFamily =
+  overlaySettings.chatFontFamily ||
+  "system-ui";
+  // 🔥 OVERLAY STYLE
+  msg.style.position = "relative";
+
+  msg.style.padding = "10px 14px";
+
+  msg.style.margin = "6px 0";
+
+  msg.style.color =
+  overlaySettings.fontColor ||
+  "#ffffff";
+
+  msg.style.maxWidth = "85%";
+
+  msg.style.wordWrap = "break-word";
+
+  msg.style.backdropFilter =
+    "blur(8px)";
+
+  msg.style.boxShadow =
+    "0 4px 20px rgba(0,0,0,0.4)";
+
+  msg.style.borderRadius =
+    (overlaySettings.bubbleRadius || 20)
+    + "px";
+
+  msg.style.fontSize =
+    (overlaySettings.chatFontSize || 18)
+    + "px";
+msg.style.fontFamily =
+  overlaySettings.chatFontFamily ||
+  "system-ui";
+  // 🔥 SAME USER COLORS AS OVERLAY
+  msg.style.background =
+    data.color ||
+    getOverlayStyleColor(data.name);
+
+  let html =
+    `<strong>${data.name || "User"}</strong><br>`;
+
+  // 🔥 TEXT
+  if(data.message){
+
+    html +=
+      formatChatMessage(data.message);
+
+  }
+
+  // 🔥 IMAGE
+  if(data.image){
+
+    html += `
+      <br>
+      <img
+        src="${data.image}"
+        class="msgImg"
+      >
+    `;
+  }
+
+  // 🔥 AUDIO
+  if(data.audio){
+
+    html += `
+      <br>
+      <audio
+        controls
+        src="${data.audio}"
+        style="
+          width:100%;
+          margin-top:8px;
+        "
+      ></audio>
+    `;
+  }
+
+  msg.innerHTML = html;
+
+  wrap.appendChild(msg);
+
+  messages.appendChild(wrap);
+
+  // 🔥 AUTO SCROLL
+  if(!userScrolledUp){
+
+    messages.scrollTop =
+      messages.scrollHeight;
+
+  }else{
+
+    newMsgIndicator.style.display =
+      "block";
+
+  }
+
+  // 🔥 LIMIT
+  while(messages.children.length > 60){
+
+    messages.removeChild(
+      messages.firstChild
+    );
+
+  }
+
+}
+socket.on("message history",(history)=>{
+
+  const messages =
+    document.getElementById("messages");
+
+  if(!messages) return;
+
+  messages.innerHTML = "";
+
+  history.forEach(msg=>{
+    addMessage(msg);
+
+  });
+
+});
+socket.on("birthday_wish",(data)=>{
+
+  console.log(
+    "🎂 BIRTHDAY EVENT:",
+    data
+  );
+
+  showBirthdayOverlay({
+
+    birthdayName:
+      data.birthday_person,
+
+    message:
+      data.message,
+
+    name:
+      data.from_nickname,
+
+    image:
+      data.photo_url,
+
+    duration:
+      data.duration
+
+  });
+
+});
+socket.on("chat message",(data)=>{
+
+  console.log(
+    "MESSAGE RECEIVED:",
+    data
+  );
+
+  
+  addMessage(data);
+
+});
+// =========================
+// 🌍 GLOBAL EXPORTS
+// =========================
+// =========================
+// 🔥 FAILSAFE UI RESET
+// =========================
+
+window.addEventListener("blur", ()=>{
+
+  setTimeout(()=>{
+
+    document.body.style.pointerEvents = "auto";
+
+  },200);
+
+});
+}); // closes DOMContentLoaded
+</script>
+<script>
+// =========================
+// 🎂 BIRTHDAY MODE OPEN
+// =========================
+let birthdayModeEnabled = true;
+
+function openBirthdayMode(){
+console.log("🎂 BUTTON CLICKED");
+  if(!birthdayModeEnabled){
+    return;
+  }
+
+  const modal =
+    document.getElementById(
+      "birthdayModal"
+    );
+
+  if(modal){
+    modal.style.display =
+      "flex";
+  }
+
+}
+// =========================
+// 🎂 BIRTHDAY OVERLAY
+// =========================
+
+function closeBirthdayOverlay(){
+
+  const overlay =
+    document.getElementById(
+      "birthdayOverlay"
+    );
+
+  if(!overlay) return;
+
+  overlay.style.display = "none";
+
+  if(birthdayTimer){
+    clearTimeout(birthdayTimer);
+    birthdayTimer = null;
+  }
+
+  console.log(
+    "🎂 OVERLAY CLOSED"
+  );
+}
+
+function showBirthdayOverlay(data){
+
+  console.log(
+    "🎂 SHOWING OVERLAY",
+    Date.now()
+  );
+
+  const overlay =
+    document.getElementById(
+      "birthdayOverlay"
+    );
+
+  if(!overlay) return;
+
+  document.getElementById(
+    "birthdayPerson"
+  ).textContent =
+    data.birthdayName || "";
+
+  document.getElementById(
+    "birthdayMessage"
+  ).textContent =
+    data.message || "";
+
+  document.getElementById(
+    "birthdaySender"
+  ).textContent =
+    "From: " + (data.name || "");
+
+  const img =
+    document.getElementById(
+      "birthdayImage"
+    );
+
+  if(data.image){
+
+    img.src = data.image;
+    img.style.display = "block";
+
+  }else{
+
+    img.style.display = "none";
+
+  }
+
+  overlay.style.display = "flex";
+
+  if(birthdayTimer){
+    clearTimeout(birthdayTimer);
+  }
+
+  birthdayTimer = setTimeout(()=>{
+
+    closeBirthdayOverlay();
+
+  }, Number(data.duration) || 15000);
+
+  console.log(
+    "🎂 TIMER STARTED:",
+    Number(data.duration) || 15000
+  );
+
+  const card =
+    overlay.querySelector(
+      ".birthdayCard"
+    );
+
+  if(card){
+
+    card.onclick = (e)=>{
+      e.stopPropagation();
+    };
+
+  }
+
+  for(let i=0;i<50;i++){
+
+    const confetti =
+      document.createElement("div");
+
+    confetti.innerHTML =
+      ["🎉","🎂","🎈","✨"][
+        Math.floor(
+          Math.random()*4
+        )
+      ];
+
+    confetti.style.position =
+      "fixed";
+
+    confetti.style.left =
+      Math.random()*100 + "vw";
+
+    confetti.style.top =
+      "-50px";
+
+    confetti.style.fontSize =
+      (20+Math.random()*25)+"px";
+
+    confetti.style.zIndex =
+      999999;
+
+    document.body.appendChild(
+      confetti
+    );
+
+    confetti.animate(
+      [
+        {
+          transform:
+            "translateY(0px)"
+        },
+        {
+          transform:
+            "translateY(110vh)"
+        }
+      ],
+      {
+        duration:
+          3000 +
+          Math.random()*3000
+      }
+    );
+
+    setTimeout(()=>{
+      confetti.remove();
+    },6000);
+
+  }
+
+}// =========================
+// 🎂 SEND BIRTHDAY
+// =========================
+function sendBirthdayWish() {
+
+  const birthdayPerson =
+    document.getElementById("bdayName")?.value || "";
+
+  const message =
+    document.getElementById("bdayMessage")?.value || "";
+
+  const from =
+    window.userName || "Anonymous";
+
+  const song =
+    document.getElementById("bdaySong")?.value || "";
+
+  if (!birthdayPerson && !message) return;
+
+  const selfie =
+  document.getElementById("birthdaySelfie");
+
+const upload =
+  document.getElementById("birthdayUpload");
+
+const imageFile =
+  selfie.files[0] ||
+  upload.files[0];
+console.log("📸 SELFIE FILE:", selfie?.files?.[0]);
+console.log("🖼 UPLOAD FILE:", upload?.files?.[0]);
+console.log("🎂 IMAGE FILE:", imageFile);
+if(imageFile){
+
+  const reader = new FileReader();
+
+reader.onload = () => {
+
+  const img = new Image();
+
+  img.onload = () => {
+
+    const canvas =
+      document.createElement("canvas");
+
+    let width = img.width;
+    let height = img.height;
+
+    const maxSize = 700;
+
+    if(width > height){
+
+      if(width > maxSize){
+        height =
+          height * (maxSize / width);
+
+        width = maxSize;
+      }
+
+    }else{
+
+      if(height > maxSize){
+
+        width =
+          width * (maxSize / height);
+
+        height = maxSize;
+      }
+
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx =
+      canvas.getContext("2d");
+
+    ctx.drawImage(
+      img,
+      0,
+      0,
+      width,
+      height
+    );
+
+    const compressed =
+      canvas.toDataURL(
+        "image/jpeg",
+        0.55
+      );
+
+    socket.emit("birthday_wish",{
+      birthday_person: birthdayPerson,
+      message: message,
+      from_nickname: from,
+      song_request: song,
+      photo_url: compressed
+    });
+
+  };
+
+  img.src = reader.result;
+
+};
+
+reader.readAsDataURL(imageFile);
+
+}else{
+
+  socket.emit("birthday_wish", {
+    birthday_person: birthdayPerson,
+    message: message,
+    from_nickname: from,
+    song_request: song
+  });
+
+}
+
+  const modal = document.getElementById("birthdayModal");
+  if (modal) modal.style.display = "none";
+}
+</script>
+<!-- ========================= -->
+<!-- 🎂 BIRTHDAY MODAL -->
+<!-- ========================= -->
+<div id="birthdayModal" class="birthdayModal">
+
+  <div class="birthdayModalContent">
+
+    <div class="birthdayHeader">
+      🎂 Birthday Celebration
+    </div>
+
+    <input
+      id="bdayName"
+      class="birthdayInput"
+      placeholder="🎂 Birthday Person">
+
+    <input
+      id="bdayMessage"
+      class="birthdayInput"
+      placeholder="💌 Birthday Message">
+
+    <input
+      id="bdaySong"
+      class="birthdayInput"
+      placeholder="🎵 Favorite Song Request">
+
+    <label style="color:white;">
+      📸 Take Selfie
+    </label>
+
+    <input
+      type="file"
+      id="birthdaySelfie"
+      accept="image/*"
+      capture>
+
+    <label style="color:white;">
+      🖼 Upload Image
+    </label>
+
+    <input
+      type="file"
+      id="birthdayUpload"
+      accept="image/*">
+
+    <button
+      onclick="sendBirthdayWish()"
+      class="sendBirthdayBtn">
+      🎂 Send Birthday Wish
+    </button>
+
+    <button
+      onclick="document.getElementById('birthdayModal').style.display='none'"
+      class="closeBirthdayBtn">
+      ❌ Close
+    </button>
+
+  </div>
+
+</div>
+<script>
+
+const birthdayModal =
+document.getElementById("birthdayModal");
+
+birthdayModal.addEventListener("click",(e)=>{
+
+  console.log("🎂 MODAL CLICK", e.target);
+
+  if(e.target === birthdayModal){
+
+    console.log("🎂 CLOSING MODAL");
+
+    birthdayModal.style.display="none";
+
+  }
+
+});</script>
+
+<div id="videoViewer" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:999999;
+">
+
+<div style="
+position:absolute;
+top:10px;
+left:10px;
+right:10px;
+display:flex;
+justify-content:space-between;
+z-index:1000000;
+">
+
+<button
+id="videoBackBtn"
+onclick="closeVideoViewer()"
+style="
+padding:10px 14px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+">
+⬅ Back
+</button>
+
+<button
+id="videoDownloadBtn"
+style="
+padding:10px 14px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+">
+⬇ Download
+</button>
+
+</div>
+
+<video
+id="videoPlayer"
+playsinline
+controls
+style="
+width:100%;
+height:100%;
+object-fit:contain;
+background:#000;
+"
+></video>
+
+</div>
+<!-- 🖼 IMAGE VIEWER -->
+<div id="imgViewer" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+display:none;
+opacity:0;
+transform:translateY(-10px);
+transition:0.25s;
+justify-content:center;
+align-items:center;
+z-index:999999;
+">
+
+  <img
+    id="imgViewerImg"
+    style="
+      max-width:95%;
+      max-height:95%;
+      border-radius:12px;
+    "
+  >
+
+</div>
+
+<!-- 👤 ACCOUNT POPUP -->
+<div id="accountPopup" style="
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111;
+padding:20px;
+border-radius:14px;
+z-index:999999;
+display:none;
+width:300px;
+">
+<h2 style="color:#00cfff;">My Account</h2>
+
+<input id="usernameInput" placeholder="Username" style="
+width:100%;
+padding:10px;
+margin-top:10px;
+">
+<input id="avatarInput" placeholder="Avatar Image URL" style="
+width:100%;
+padding:10px;
+margin-top:10px;
+">
+<button id="saveAccountBtn" style="
+margin-top:15px;
+width:100%;
+padding:12px;
+background:#00cfff;
+border:none;
+border-radius:10px;
+font-weight:bold;
+">
+Save Account
+</button>
+
+<button
+id="closeAccountBtn"
+style="
+margin-top:10px;
+width:100%;
+padding:12px;
+background:#333;
+color:#fff;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+">
+❌ Close
+</button>
+
+</div>
+
+<script>
+
+const accountBtn =
+  document.getElementById("accountBtn");
+
+const accountPopup =
+  document.getElementById("accountPopup");
+
+const accountBtnDropdown =
+  document.getElementById("accountBtnDropdown");
+
+const usernameInput =
+  document.getElementById("usernameInput");
+
+const avatarInput =
+  document.getElementById("avatarInput");
+
+const saveAccountBtn =
+  document.getElementById("saveAccountBtn");
+
+const closeAccountBtn =
+  document.getElementById("closeAccountBtn");
+
+// OPEN FROM DROPDOWN
+if(accountBtnDropdown){
+
+  accountBtnDropdown.onclick = () => {
+
+    if(accountPopup){
+      accountPopup.style.display = "block";
+    }
+
+  };
+
+}
+
+// CLOSE
+if(closeAccountBtn){
+
+  closeAccountBtn.onclick = () => {
+
+    accountPopup.style.display = "none";
+
+  };
+
+}
+
+// LOAD SAVED ACCOUNT
+if(usernameInput){
+  usernameInput.value =
+    localStorage.getItem("karaoke_username") || "";
+}
+
+if(avatarInput){
+  avatarInput.value =
+    localStorage.getItem("karaoke_avatar") || "";
+}
+
+// SAVE ACCOUNT
+if(saveAccountBtn){
+
+  saveAccountBtn.onclick = () => {
+
+    localStorage.setItem(
+      "karaoke_username",
+      usernameInput.value
+    );
+
+    localStorage.setItem(
+      "karaoke_avatar",
+      avatarInput.value
+    );
+
+    alert("Account Saved!");
+
+    accountPopup.style.display = "none";
+  };
+
+}
+
+</script>
+
+<!-- ========================= -->
+<!-- 🗳️ VOTE POPUP -->
+<!-- ========================= -->
+
+<div id="votePopup" class="popupOverlay">
+
+  <div class="popupCard">
+
+    <div class="popupTitle" style="color:#00cfff;">
+      🗳️ Vote For Performer
+    </div>
+
+    <div id="contestantList"></div>
+
+    <button
+      id="closeVotePopupBtn"
+      class="popupBtn closePopupBtn"
+    >
+      Close
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- 🏆 LEADERBOARD POPUP -->
+<!-- ========================= -->
+
+<div id="leaderboardPopup" class="popupOverlay">
+
+  <div class="popupCard">
+
+    <div class="popupTitle" style="color:#ffd700;">
+      🏆 Leaderboard
+    </div>
+
+    <div id="leaderboardList"></div>
+
+    <button
+      id="closeLeaderboardBtn"
+      class="popupBtn closePopupBtn"
+    >
+      Close
+    </button>
+
+  </div>
+
+</div>
+<!-- WINNER REVEAL -->
+
+<div
+  id="winnerPopup"
+  class="popupOverlay"
+  >
+
+  <!-- DARK BACKDROP -->
+  <div
+    style="
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,.75);
+    "
+  ></div>
+  <div
+    class="popupCard"
+    style="
+      position:relative;
+      z-index:2;
+      text-align:center;
+      max-width:500px;
+    "
+  >
+
+    <div
+      style="
+        font-size:60px;
+        margin-bottom:15px;
+      "
+    >
+      🏆
+    </div>
+
+    <div
+      id="winnerTitle"
+      style="
+        font-size:32px;
+        color:#ffd700;
+        font-weight:bold;
+      "
+    >
+      Winner
+    </div>
+
+    <div
+  id="winnerScore"
+  style="
+    margin-top:10px;
+    font-size:22px;
+    color:white;
+  "
+>
+</div>
+
+<button
+onclick="
+const p=document.getElementById('winnerPopup');
+
+p.classList.remove('show');
+
+p.style.display='none';
+
+p.style.visibility='hidden';
+
+p.style.pointerEvents='none';
+"
+class="popupBtn">
+Close
+</button>
+</div>
+</div>
+
+<script>
+let deferredPrompt = null;
+
+/* =========================
+   BUTTONS
+========================= */
+
+const installBtn =
+  document.getElementById("installBtn");
+
+const shareBtn =
+  document.getElementById("shareBtn");
+
+/* =========================
+   INSTALL PROMPT
+========================= */
+
+window.addEventListener(
+  "beforeinstallprompt",
+  (e) => {
+
+    e.preventDefault();
+
+    deferredPrompt = e;
+
+    if (installBtn) {
+      installBtn.style.display = "flex";
+    }
+  }
+);
+
+/* =========================
+   INSTALL BUTTON
+========================= */
+
+if (installBtn) {
+
+  installBtn.addEventListener(
+    "click",
+    async () => {
+
+      if (!deferredPrompt) {
+
+        alert(
+          "Install not available yet"
+        );
+
+        return;
+      }
+
+      deferredPrompt.prompt();
+
+      await deferredPrompt.userChoice;
+
+      deferredPrompt = null;
+
+      installBtn.style.display =
+        "none";
+    }
+  );
+}
+
+/* =========================
+   SHARE BUTTON
+========================= */
+
+if (shareBtn) {
+
+  shareBtn.addEventListener(
+    "click",
+    async () => {
+
+      const shareData = {
+
+        title:
+          "Dean's Live Karaoke Party",
+
+        text:
+          "🎤 Join my live karaoke party!",
+
+        url:
+          window.location.origin
+      };
+
+      /* 📱 MOBILE SHARE */
+      if (navigator.share) {
+
+        try {
+
+          await navigator.share(
+            shareData
+          );
+
+        } catch (err) {
+
+          console.log(
+            "Share cancelled"
+          );
+        }
+
+        return;
+      }
+
+      /* 💬 WHATSAPP FALLBACK */
+
+      const msg = encodeURIComponent(
+
+        "🎤 Join my live karaoke party!\n\n" +
+
+        window.location.origin
+      );
+
+      window.open(
+
+        `https://wa.me/?text=${msg}`,
+
+        "_blank"
+      );
+    }
+  );
+}
+</script>
+
+<!-- 🔥 BIG ME UP BUTTON -->
+<button id="reactionBtn">
+  ✨ Tap Me & Big Me Up On Screen ✨
+</button>
+
+<script>
+
+document
+  .getElementById("reactionBtn")
+  .addEventListener("click", () => {
+
+    socket.emit("reaction", "🔥");
+
+  });
+
+</script>
+
+<!-- 🎂 BIRTHDAY OVERLAY -->
+<div
+  id="birthdayOverlay"
+  onclick="closeBirthdayOverlay()">
+
+  <div class="birthdayCard">
+
+    <div class="birthdayTitle">
+      🎂 HAPPY BIRTHDAY 🎂
+    </div>
+
+    <div id="birthdayPerson"
+         class="birthdayPerson">
+    </div>
+
+    <img id="birthdayImage"
+         class="birthdayImage">
+
+    <div id="birthdayMessage"
+         class="birthdayMessage">
+    </div>
+
+    <div id="birthdaySender"
+     class="birthdaySender">
+</div>
+
+</div> <!-- birthdayCard -->
+
+</div> <!-- birthdayOverlay -->
+
+<script>
+
+const birthdayOverlay =
+  document.getElementById("birthdayOverlay");
+
+let birthdayTouchStartX = 0;
+let birthdayTouchEndX = 0;
+
+birthdayOverlay?.addEventListener(
+  "touchstart",
+  e => {
+
+    birthdayTouchStartX =
+      e.changedTouches[0].clientX;
+
+  },
+  { passive:true }
+);
+
+birthdayOverlay?.addEventListener(
+  "touchend",
+  e => {
+
+    birthdayTouchEndX =
+      e.changedTouches[0].clientX;
+
+    const distance =
+      birthdayTouchEndX -
+      birthdayTouchStartX;
+
+    if(Math.abs(distance) > 80){
+
+      console.log("🎂 SWIPE CLOSE");
+
+      closeBirthdayOverlay();
+
+    }
+
+  },
+  { passive:true }
+);
+
+</script>
+<!-- 🔥 PERFORMANCE BROWSER -->
+<div id="performanceList" style="
+display:none;
+position:fixed;
+top:80px;
+left:10px;
+right:10px;
+bottom:10px;
+background:#000;
+color:#fff;
+padding:10px;
+overflow:auto;
+border-radius:12px;
+z-index:999999;
+"></div>
+<script>
+
+if("serviceWorker" in navigator){
+
+  window.addEventListener(
+    "load",
+    ()=>{
+
+      navigator.serviceWorker
+        .register("/service-worker.js")
+
+        .then(()=>{
+
+          console.log(
+            "✅ Service Worker Registered"
+          );
+
+        })
+
+        .catch(err=>{
+
+          console.error(
+            "❌ Service Worker Error",
+            err
+          );
+
+        });
+
+    }
+  );
+
+}
+
+</script>
+</body>
+</html>
+  
+ 
+ 
+
+  
+
+
+
+
+
+
+  
